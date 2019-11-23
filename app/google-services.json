@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "971958616879",
+    "firebase_url": "https://emotrack-9e9b9.firebaseio.com",
+    "project_id": "emotrack-9e9b9",
+    "storage_bucket": "emotrack-9e9b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971958616879:android:e23b96c471b51855cdd7da",
+        "android_client_info": {
+          "package_name": "edu.asu.mcgroup27.emotrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971958616879-p707f0medkbsnhnio6dgaja1122mf1qj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.asu.mcgroup27.emotrack",
+            "certificate_hash": "8efae2ea64b779eab05d4217164663fdbc416bba"
+          }
+        },
+        {
+          "client_id": "971958616879-jmodndk4t2ium1q9hlsnjnp7nqtvlaql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvByojir5IWgHwhAeeFYcmPXK1N1DmLlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971958616879-jmodndk4t2ium1q9hlsnjnp7nqtvlaql.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
