@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -15,16 +16,19 @@ import java.util.List;
 
 public class LauncherActivity extends AppCompatActivity {
 
+    private final String TAG = "LauncherActivity";
+
     FirebaseAuth auth;
     private static final int RC_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "<Suprateem>LauncherActivity!", new Throwable());
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
         Intent start;
-        if(currentUser == null) {
+        if (currentUser == null) {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build(),
                     new AuthUI.IdpConfig.GoogleBuilder().build());
@@ -36,8 +40,7 @@ public class LauncherActivity extends AppCompatActivity {
                             .setAvailableProviders(providers)
                             .build(),
                     RC_SIGN_IN);
-        }
-        else {
+        } else {
             start = new Intent(this, MainActivity.class);
             startActivity(start);
             LauncherActivity.this.finish();

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "971958616879-tpfqau7j7q74knce4ulursldvkl6joa8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.asu.mcgroup27.emotrack",
+            "certificate_hash": "20af0651af207e398147c9f1388346fec70f4b82"
+          }
+        },
+        {
           "client_id": "971958616879-p707f0medkbsnhnio6dgaja1122mf1qj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
