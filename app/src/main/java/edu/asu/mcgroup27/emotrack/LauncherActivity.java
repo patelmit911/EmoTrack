@@ -27,7 +27,6 @@ public class LauncherActivity extends AppCompatActivity {
         Log.v(TAG, "<Suprateem>LauncherActivity!", new Throwable());
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
-        auth.signOut();
         Intent start;
         if (currentUser == null) {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -59,11 +58,13 @@ public class LauncherActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                 Intent start = new Intent(this, MainActivity.class);
                 startActivity(start);
                 LauncherActivity.this.finish();
                 // ...
             } else {
+                LauncherActivity.this.finish();
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
