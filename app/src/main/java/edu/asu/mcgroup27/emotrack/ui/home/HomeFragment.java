@@ -8,22 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import com.twitter.sdk.android.core.DefaultLogger;
-import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterConfig;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.twitter.sdk.android.core.TwitterException;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import edu.asu.mcgroup27.emotrack.R;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.User;
+import twitter4j.conf.ConfigurationBuilder;
 
 public class HomeFragment extends Fragment {
     private final String TAG = "HomeFragment";
@@ -53,6 +50,12 @@ public class HomeFragment extends Fragment {
         EditText et = register.findViewById(R.id.username);
         uName = et.getText().toString();
         Log.v(TAG, "<Suprateem>saveUserName: " + uName);
+
+        try {
+            fetchTwitterInfo(uName);
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -78,16 +81,31 @@ public class HomeFragment extends Fragment {
         return builder.create();
     }
 
-    public void fetchTwitterInfo() {
-        TwitterConfig config = new TwitterConfig.Builder(getContext())
-                .logger(new DefaultLogger(Log.DEBUG))//enable logging when app is in debug mode
-                .twitterAuthConfig(new TwitterAuthConfig(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY), getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET)))//pass the created app Consumer KEY and Secret also called API Key and Secret
-                .debug(true)//enable debug mode
-                .build();
+    public void fetchTwitterInfo(String userHandle) throws TwitterException {
 
-        //finally initialize twitter with created configs
-        Twitter.initialize(config);
+        Thread thread = new Thread(new Runnable() {
 
+            @Override
+            public void run() {
+                try {
+                    ConfigurationBuilder cb = new ConfigurationBuilder();
+                    cb.setDebugEnabled(true)
+                            .setOAuthConsumerKey(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY))
+                            .setOAuthConsumerSecret(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET))
+                            .setOAuthAccessToken(getResources().getString(R.string.com_twitter_sdk_android_ACCESS_TOKEN))
+                            .setOAuthAccessTokenSecret(getResources().getString(R.string.com_twitter_sdk_android_ACCESS_TOKEN_SECRET));
+                    TwitterFactory tf = new TwitterFactory(cb.build());
+                    twitter4j.Twitter twitter = tf.getInstance();
 
+                    User user = twitter.showUser("sbhatt4g");
+                    String profileImage = user.getProfileImageURL();
+                    Log.v(TAG, "<Suprateem>fetchTwitterInfo: " + profileImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
 }
