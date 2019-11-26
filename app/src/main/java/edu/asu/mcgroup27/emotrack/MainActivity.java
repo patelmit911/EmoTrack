@@ -145,6 +145,16 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_logoff:
                 // add code for signoff
+                AuthUI.getInstance()
+                        .signOut(getApplicationContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // ...
+                                Intent intent = new Intent(MainActivity.this, LauncherActivity.class);
+                                startActivity(intent);
+                                MainActivity.this.finish();
+                            }
+                        });
                 return true;
 
             default:
