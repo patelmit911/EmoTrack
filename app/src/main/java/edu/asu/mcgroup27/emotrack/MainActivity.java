@@ -124,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        SendMessageTask sendMessageTask = new SendMessageTask();
-        sendMessageTask.execute("weather", "HELLO", "FROM app");
+//        SendMessageTask sendMessageTask = new SendMessageTask();
+//        sendMessageTask.execute("weather", "HELLO", "FROM app");
 
         Log.v(TAG, "<Suprateem>biometric setting: " + Util.getBiometric(getApplicationContext()));
 

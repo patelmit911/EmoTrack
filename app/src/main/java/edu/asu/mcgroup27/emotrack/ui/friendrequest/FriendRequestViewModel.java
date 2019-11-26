@@ -1,14 +1,14 @@
-package edu.asu.mcgroup27.emotrack.ui.slideshow;
+package edu.asu.mcgroup27.emotrack.ui.friendrequest;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class FriendRequestViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public FriendRequestViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is slideshow fragment");
     }
