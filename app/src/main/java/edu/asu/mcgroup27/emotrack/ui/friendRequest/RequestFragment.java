@@ -10,11 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 
 import edu.asu.mcgroup27.emotrack.R;
 
 public class RequestFragment extends Fragment {
+    private DatabaseReference dbref;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         ArrayList<String> list = new ArrayList<String>();
