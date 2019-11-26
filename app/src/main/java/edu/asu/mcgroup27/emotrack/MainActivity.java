@@ -30,6 +30,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import edu.asu.mcgroup27.emotrack.messaging.SendMessageTask;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 import android.view.Menu;
@@ -122,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+
+        SendMessageTask sendMessageTask = new SendMessageTask();
+        sendMessageTask.execute("weather", "HELLO", "FROM app");
+
         Log.v(TAG, "<Suprateem>biometric setting: " + Util.getBiometric(getApplicationContext()));
 
     }
