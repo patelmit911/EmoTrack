@@ -1,7 +1,5 @@
-package edu.asu.mcgroup27.emotrack.ui.friendRequest;
+package edu.asu.mcgroup27.emotrack.Adapters;
 
-
-import edu.asu.mcgroup27.emotrack.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +11,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends BaseAdapter implements ListAdapter {
+import edu.asu.mcgroup27.emotrack.R;
+
+public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
 
-    public CustomAdapter(ArrayList<String> list, Context context) {
+    public FriendRequestAdapter(ArrayList<String> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -73,4 +73,5 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
         return view;
     }
 }
+
 
