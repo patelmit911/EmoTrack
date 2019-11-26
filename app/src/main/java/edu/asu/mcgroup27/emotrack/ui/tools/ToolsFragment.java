@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import edu.asu.mcgroup27.emotrack.R;
+import edu.asu.mcgroup27.emotrack.Util;
 
 public class ToolsFragment extends Fragment {
 
@@ -22,13 +25,19 @@ public class ToolsFragment extends Fragment {
         toolsViewModel =
                 ViewModelProviders.of(this).get(ToolsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_tools, container, false);
-        final TextView textView = root.findViewById(R.id.text_tools);
-        toolsViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+
+        final Switch bioSetting = root.findViewById(R.id.biometric_setting);
+        bioSetting.setChecked(Util.getBiometric(getContext()) == 1 ? true:false);
+        bioSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Util.setBiometric(getContext(), 1);
+                } else {
+                    Util.setBiometric(getContext(), 0);
+                }
             }
         });
+
         return root;
     }
 }

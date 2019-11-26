@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+        Log.v(TAG, "<Suprateem>biometric setting: " + Util.getBiometric(getApplicationContext()));
 
     }
 
