@@ -42,6 +42,8 @@ public class LauncherActivity extends AppCompatActivity {
     FirebaseAuth auth;
     private static final int RC_SIGN_IN = 9001;
 
+    Util biometricUtil = new Util();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +61,19 @@ public class LauncherActivity extends AppCompatActivity {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setAvailableProviders(providers)
+                            .setLogo(R.drawable.logo1)
                             .build(),
                     RC_SIGN_IN);
         } else {
             start = new Intent(this, MainActivity.class);
             startActivity(start);
-            showBiometricPrompt();
+
+            //check if Biometric feature is enabled
+            if(biometricUtil.getBiometric(this) == 1) {
+                //show Biometric prompt dialog
+                showBiometricPrompt();
+            }
+
             //Toast.makeText(getApplicationContext(),"Already signed in", Toast.LENGTH_LONG).show();
             LauncherActivity.this.finish();
         }
