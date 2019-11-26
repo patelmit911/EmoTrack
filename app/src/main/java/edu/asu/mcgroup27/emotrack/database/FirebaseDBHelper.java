@@ -22,4 +22,12 @@ public class FirebaseDBHelper {
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("requests");
     }
+
+    public static void removeItem(DatabaseReference ref, String item) {
+        ref.orderByValue().equalTo(item).getRef().setValue(null);
+    }
+
+    public static void insertItem(DatabaseReference ref, String item) {
+        ref.push().setValue(item);
+    }
 }
