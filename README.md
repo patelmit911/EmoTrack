@@ -3,6 +3,8 @@
 # Branch
 
 * feature-login
+* feature-db
+* feature-notification
 
 # References
 
