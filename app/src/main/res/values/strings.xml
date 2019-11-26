@@ -37,5 +37,7 @@
     <string name="com_twitter_sdk_android_ACCESS_TOKEN_SECRET">UVmrYVo7C2inhJkoFTJjnTGPBG64FDRadJKVHuh1uINL3</string>
     <string name="msg_subscribed">Subscribed</string>
     <string name="msg_subscribe_failed">Subscribe Failed</string>
+    <string name="channel_name">HELP</string>
+    <string name="channel_description">HELP NOTIFICATIOn CHANNEL</string>
 
 </resources>
