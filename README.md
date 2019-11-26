@@ -5,6 +5,7 @@
 * feature-login
 * feature-db
 * feature-notification
+* feature-biometrics
 
 # References
 
