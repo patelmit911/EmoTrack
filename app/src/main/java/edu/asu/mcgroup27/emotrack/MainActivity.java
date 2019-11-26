@@ -56,23 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        /*FloatingActionButton fab = findViewById(R.id.fab);
+        /*FloatingActionButton fab = findViewById(R.id.addFriendFloatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Sending Friend Request", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                FirebaseAuth.getInstance().signOut();
-                AuthUI.getInstance()
-                        .signOut(getApplicationContext())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // ...
-                                Intent intent = new Intent(MainActivity.this, LauncherActivity.class);
-                                startActivity(intent);
-                                MainActivity.this.finish();
-                            }
-                        });
+                FirebaseDBHelper.getUserFriendReqs().push().setValue("TEST");
             }
         });*/
 

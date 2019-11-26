@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import edu.asu.mcgroup27.emotrack.R;
+import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
@@ -35,12 +36,13 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        FloatingActionButton fab = root.findViewById(R.id.fab);
+        FloatingActionButton fab = root.findViewById(R.id.addFriendFloatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 register = onCreateDialog(savedInstanceState);
                 register.show();
+                FirebaseDBHelper.getUserFriendReqs().push().setValue("TEST");
             }
         });
         return root;
