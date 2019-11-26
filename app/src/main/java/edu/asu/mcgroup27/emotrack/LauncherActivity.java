@@ -2,12 +2,16 @@ package edu.asu.mcgroup27.emotrack;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+
 import edu.asu.mcgroup27.emotrack.database.FirebaseDB;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -20,8 +24,18 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class LauncherActivity extends AppCompatActivity {
+
+    private Handler handler = new Handler();
+
+    private Executor executor = new Executor() {
+        @Override
+        public void execute(Runnable command) {
+            handler.post(command);
+        }
+    };
 
     private final String TAG = "LauncherActivity";
 
@@ -50,6 +64,8 @@ public class LauncherActivity extends AppCompatActivity {
         } else {
             start = new Intent(this, MainActivity.class);
             startActivity(start);
+            showBiometricPrompt();
+            //Toast.makeText(getApplicationContext(),"Already signed in", Toast.LENGTH_LONG).show();
             LauncherActivity.this.finish();
         }
 
@@ -95,4 +111,47 @@ public class LauncherActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void showBiometricPrompt() {
+        //Toast.makeText(getApplicationContext(),"Biometric Prompt", Toast.LENGTH_LONG).show();
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("BIOMETRIC LOGIN")
+                .setSubtitle("Log in using your biometric credentials")
+                // .setNegativeButtonText("Cancel")
+                .setDeviceCredentialAllowed(true)
+                .build();
+
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                showBiometricPrompt();
+                Toast.makeText(getApplicationContext(),
+                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(
+                    @NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                BiometricPrompt.CryptoObject authenticatedCryptoObject = result.getCryptoObject();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Authentication failed",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+
+        biometricPrompt.authenticate(promptInfo);
+    }
+
+
 }
