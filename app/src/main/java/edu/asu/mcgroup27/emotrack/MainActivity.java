@@ -25,11 +25,15 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
+import edu.asu.mcgroup27.emotrack.database.UserMetaData;
+import edu.asu.mcgroup27.emotrack.database.UserMetaDataListener;
 import edu.asu.mcgroup27.emotrack.messaging.SendMessageTask;
 import edu.asu.mcgroup27.emotrack.ui.DisplayContent;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        updateUserMetaData();
 
 
         /*FloatingActionButton fab = findViewById(R.id.addFriendFloatingActionButton);
@@ -211,5 +215,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    private void updateUserMetaData() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference ref = FirebaseDBHelper.getUserMetaDataRef();
+        ref.child("displayName").setValue(user.getDisplayName());
+        ref.child("email").setValue(user.getEmail());
+        ref.child("phone").setValue(user.getPhoneNumber());
+        ref.child("photoURI").setValue(user.getPhotoUrl().toString());
     }
 }
