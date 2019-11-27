@@ -1,20 +1,18 @@
-package edu.asu.mcgroup27.emotrack.Adapters;
+package edu.asu.mcgroup27.emotrack.adapters;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +22,6 @@ import java.util.ArrayList;
 
 import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
-import edu.asu.mcgroup27.emotrack.dialogs.EmergencyContactDialog;
 
 public class EmergencyContactAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list;
@@ -87,12 +84,10 @@ public class EmergencyContactAdapter extends BaseAdapter implements ListAdapter 
             view = inflater.inflate(R.layout.fragment_emergency_contact_custom, null);
         }
 
-        //Handle TextView and display string from your list
-        TextView listItemText = view.findViewById(R.id.list_item_string);
+        TextView listItemText = view.findViewById(R.id.friendRequestListItem);
         listItemText.setText(list.get(position));
 
-        //Handle buttons and add onClickListeners
-        Button deleteBtn = view.findViewById(R.id.emergencyContactDeleteButton);
+        ImageButton deleteBtn = view.findViewById(R.id.emergencyContactDeleteButton);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override

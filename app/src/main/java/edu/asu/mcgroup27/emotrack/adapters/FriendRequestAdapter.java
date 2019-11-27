@@ -1,17 +1,18 @@
-package edu.asu.mcgroup27.emotrack.Adapters;
+package edu.asu.mcgroup27.emotrack.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
+import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
 
 public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list;
@@ -29,7 +31,7 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
     private DatabaseReference dbfriendref;
 
     public FriendRequestAdapter(Context context) {
-        this.list = new ArrayList<String>();
+        this.list = new ArrayList<>();
         this.context = context;
         this.dbreqref = FirebaseDBHelper.getUserFriendReqs();
         this.dbfriendref = FirebaseDBHelper.getUserFriends();
@@ -85,19 +87,17 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.fragment_friend_request_custom, null);
         }
 
-        //Handle TextView and display string from your list
-        TextView listItemText = view.findViewById(R.id.list_item_string);
+        TextView listItemText = view.findViewById(R.id.friendRequestListItem);
         listItemText.setText(list.get(position));
 
-        //Handle buttons and add onClickListeners
-        Button deleteBtn = view.findViewById(R.id.friendRequestDeleteButton);
-        Button addBtn = view.findViewById(R.id.friendRequestAddButton);
+        ImageButton deleteBtn = view.findViewById(R.id.friendRequestDeleteButton);
+        ImageButton addBtn = view.findViewById(R.id.friendRequestAddButton);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 FirebaseDBHelper.removeItem(dbreqref, list.get(position));
-                list.remove(position); //or some other task
+                list.remove(position);
                 notifyDataSetChanged();
             }
         });
@@ -106,7 +106,14 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
                 FirebaseDBHelper.insertItem(dbfriendref, list.get(position));
                 FirebaseDBHelper.removeItem(dbreqref, list.get(position));
-                list.remove(position); //or some other task
+                String requestFrom = list.get(position);
+                FirebaseDBHelper.getUserFriends(requestFrom, new UserDBRefListener() {
+                    @Override
+                    public void onObtained(DatabaseReference databaseReference) {
+                        FirebaseDBHelper.insertItem(databaseReference, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    }
+                });
+                list.remove(position);
                 notifyDataSetChanged();
             }
         });
