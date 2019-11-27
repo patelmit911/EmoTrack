@@ -1,31 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/list_item_string"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:paddingLeft="8dp"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/friendRequestDeleteButton"
+    <TextView
+        android:id="@+id/friendRequestListItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:padding="2dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="2dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:textSize="20dp"
+        android:textStyle="normal" />
+
+    <ImageButton
+        android:id="@+id/friendRequestDeleteButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:text="Delete" />
+        android:layout_marginRight="25dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_delete" />
 
-    <Button
+    <ImageButton
         android:id="@+id/friendRequestAddButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/friendRequestDeleteButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:text="Add" />
+        android:layout_marginRight="25dp"
+        android:layout_toLeftOf="@id/friendRequestDeleteButton"
+        android:background="#0AFFFFFF"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_add" />
+
 </RelativeLayout>

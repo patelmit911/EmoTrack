@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 import edu.asu.mcgroup27.emotrack.R;
-import edu.asu.mcgroup27.emotrack.Adapters.FriendRequestAdapter;
+import edu.asu.mcgroup27.emotrack.adapters.FriendRequestAdapter;
 
 public class FriendRequestFragment extends Fragment {
 
