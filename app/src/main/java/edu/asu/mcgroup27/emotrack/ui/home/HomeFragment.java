@@ -15,8 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import edu.asu.mcgroup27.emotrack.R;
+import edu.asu.mcgroup27.emotrack.database.FirebaseDB;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 register = onCreateDialog(savedInstanceState);
                 register.show();
-                FirebaseDBHelper.getUserFriendReqs().push().setValue("TEST");
+                //FirebaseDBHelper.getUserFriendReqs().push().setValue("TEST");
             }
         });
         return root;
@@ -60,6 +62,12 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    public void sendFriendRequest() {
+        EditText et = register.findViewById(R.id.username);
+        uName = et.getText().toString();
+        //FirebaseDBHelper.insertItem(FirebaseDBHelper.getUserFriendReqs(uName), FirebaseAuth.getInstance().getCurrentUser().getEmail());
+    }
+
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
@@ -72,7 +80,8 @@ public class HomeFragment extends Fragment {
                 .setPositiveButton(R.string.register, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        saveUserName();
+                        //saveUserName();
+                        sendFriendRequest();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
