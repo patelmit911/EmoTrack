@@ -9,7 +9,16 @@ public class UserMetaData {
     private String email;
     private String displayName;
     private String photoURI;
+    String phone;
     private String twitterID;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getEmail() {
         return email;

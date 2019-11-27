@@ -6,6 +6,7 @@ import androidx.biometric.BiometricPrompt;
 
 import edu.asu.mcgroup27.emotrack.database.FirebaseDB;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
+import edu.asu.mcgroup27.emotrack.database.UserMetaData;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -97,7 +98,6 @@ public class LauncherActivity extends AppCompatActivity {
                                 //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                             }
                         });
-
                 Intent start = new Intent(this, MainActivity.class);
                 startActivity(start);
                 LauncherActivity.this.finish();
@@ -152,6 +152,8 @@ public class LauncherActivity extends AppCompatActivity {
 
         biometricPrompt.authenticate(promptInfo);
     }
+
+
 
 
 }

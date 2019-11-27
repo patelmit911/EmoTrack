@@ -69,10 +69,59 @@ public class FirebaseDBHelper {
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
-    public static DatabaseReference getUserMetaData() {
+    public static DatabaseReference getUserMetaDataRef() {
         return FirebaseDB.getInstance().getReference("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("data");
+    }
+
+    public static void getUserMetaDataRef(String email, final UserDBRefListener listener) {
+        getUserIDRef(email, new UserDBRefListener() {
+            @Override
+            public void onObtained(DatabaseReference databaseReference) {
+                listener.onObtained(databaseReference.child("data"));
+            }
+        });
+    }
+
+    public static void getUserMetaData(final UserMetaDataListener listener) {
+        getUserMetaDataRef(FirebaseAuth.getInstance().getCurrentUser().getEmail(), new UserDBRefListener() {
+            @Override
+            public void onObtained(DatabaseReference databaseReference) {
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserMetaData userMetaData = dataSnapshot.getValue(UserMetaData.class);
+                        listener.onObtained(userMetaData);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    public static void getUserMetaData(String email, final UserMetaDataListener listener) {
+        getUserMetaDataRef(email, new UserDBRefListener() {
+            @Override
+            public void onObtained(DatabaseReference databaseReference) {
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserMetaData userMetaData = dataSnapshot.getValue(UserMetaData.class);
+                        listener.onObtained(userMetaData);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
     }
 
     public static void getUser(String email, final UserDBRefListener listener) {
