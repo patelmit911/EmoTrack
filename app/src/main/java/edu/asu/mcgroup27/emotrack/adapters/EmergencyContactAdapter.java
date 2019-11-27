@@ -84,11 +84,9 @@ public class EmergencyContactAdapter extends BaseAdapter implements ListAdapter 
             view = inflater.inflate(R.layout.fragment_emergency_contact_custom, null);
         }
 
-        //Handle TextView and display string from your list
         TextView listItemText = view.findViewById(R.id.friendRequestListItem);
         listItemText.setText(list.get(position));
 
-        //Handle buttons and add onClickListeners
         ImageButton deleteBtn = view.findViewById(R.id.emergencyContactDeleteButton);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
