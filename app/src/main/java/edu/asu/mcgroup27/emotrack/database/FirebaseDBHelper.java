@@ -17,6 +17,12 @@ public class FirebaseDBHelper {
                 .child("requests");
     }
 
+    public static DatabaseReference getUserEmergencyContact() {
+        return FirebaseDB.getInstance().getReference("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("contacts");
+    }
+
     public static DatabaseReference getUserFriends() {
         return FirebaseDB.getInstance().getReference("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
