@@ -1,5 +1,6 @@
 package edu.asu.mcgroup27.emotrack.Adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
@@ -33,7 +34,7 @@ public class EmergencyContactAdapter extends BaseAdapter implements ListAdapter 
     public EmergencyContactAdapter(Context context) {
         this.list = new ArrayList<String>();
         this.context = context;
-
+        this.dbconref = FirebaseDBHelper.getUserEmergencyContact();
         dbconref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -83,26 +84,24 @@ public class EmergencyContactAdapter extends BaseAdapter implements ListAdapter 
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.friend_request_custom, null);
+            view = inflater.inflate(R.layout.fragment_emergency_contact_custom, null);
         }
 
         //Handle TextView and display string from your list
-        TextView listItemText = (TextView)view.findViewById(R.id.list_item_string);
+        TextView listItemText = view.findViewById(R.id.list_item_string);
         listItemText.setText(list.get(position));
 
         //Handle buttons and add onClickListeners
-        Button deleteBtn = (Button)view.findViewById(R.id.emergencyContactDeleteButton);
+        Button deleteBtn = view.findViewById(R.id.emergencyContactDeleteButton);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //FirebaseDBHelper.removeItem(dbreqref, list.get(position));
-                list.remove(position); //or some other task
+                FirebaseDBHelper.removeItem(dbconref, list.get(position));
+                list.remove(position);
                 notifyDataSetChanged();
             }
         });
-
-
         return view;
     }
 }

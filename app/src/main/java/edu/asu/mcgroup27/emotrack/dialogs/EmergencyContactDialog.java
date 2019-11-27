@@ -30,7 +30,7 @@ public class EmergencyContactDialog extends DialogFragment {
     private Spinner spinner;
     public EmergencyContactDialog(){
         this.list = new ArrayList<>();
-        this.dbfriendref = FirebaseDBHelper.getUserFriends();
+//        this.dbfriendref = FirebaseDBHelper.getUserFriends();
         dbfriendref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -63,12 +63,18 @@ public class EmergencyContactDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.fragment_emergency_spinner, null));
+        builder.setMessage("dialog_fire_missiles")
+                .setPositiveButton("fire", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES!
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+        // Create the AlertDialog object and return it
         return builder.create();
 
        // dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,);

@@ -1,7 +1,6 @@
 package edu.asu.mcgroup27.emotrack.Adapters;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,16 +82,16 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.friend_request_custom, null);
+            view = inflater.inflate(R.layout.fragment_friend_request_custom, null);
         }
 
         //Handle TextView and display string from your list
-        TextView listItemText = (TextView)view.findViewById(R.id.list_item_string);
+        TextView listItemText = view.findViewById(R.id.list_item_string);
         listItemText.setText(list.get(position));
 
         //Handle buttons and add onClickListeners
-        Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
-        Button addBtn = (Button)view.findViewById(R.id.add_btn);
+        Button deleteBtn = view.findViewById(R.id.friendRequestDeleteButton);
+        Button addBtn = view.findViewById(R.id.friendRequestAddButton);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
