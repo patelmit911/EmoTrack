@@ -12,7 +12,7 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/delete_btn"
+        android:id="@+id/friendRequestDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -21,10 +21,10 @@
         android:text="Delete" />
 
     <Button
-        android:id="@+id/add_btn"
+        android:id="@+id/friendRequestAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/delete_btn"
+        android:layout_toLeftOf="@id/friendRequestDeleteButton"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:text="Add" />

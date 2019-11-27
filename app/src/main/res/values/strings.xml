@@ -27,7 +27,7 @@
 
     <string name="register_header">Add Members</string>
     <string name="register">Register</string>
-    <string name="uname">Twitter Username</string>
+    <string name="uname">Enter Email Address</string>
     <string name="cancel">Cancel</string>
 
     <!-- text view to show user details -->

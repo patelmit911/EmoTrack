@@ -1,6 +1,8 @@
 package edu.asu.mcgroup27.emotrack.Adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,19 +24,18 @@ import java.util.ArrayList;
 
 import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
+import edu.asu.mcgroup27.emotrack.dialogs.EmergencyContactDialog;
 
-public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
+public class EmergencyContactAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list;
     private Context context;
-    private DatabaseReference dbreqref;
-    private DatabaseReference dbfriendref;
+    private DatabaseReference dbconref;
 
-    public FriendRequestAdapter(Context context) {
+    public EmergencyContactAdapter(Context context) {
         this.list = new ArrayList<String>();
         this.context = context;
-        this.dbreqref = FirebaseDBHelper.getUserFriendReqs();
-        this.dbfriendref = FirebaseDBHelper.getUserFriends();
-        dbreqref.addChildEventListener(new ChildEventListener() {
+        this.dbconref = FirebaseDBHelper.getUserEmergencyContact();
+        dbconref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 list.add(dataSnapshot.getValue().toString());
@@ -82,7 +84,7 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.fragment_friend_request_custom, null);
+            view = inflater.inflate(R.layout.fragment_emergency_contact_custom, null);
         }
 
         //Handle TextView and display string from your list
@@ -90,27 +92,16 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setText(list.get(position));
 
         //Handle buttons and add onClickListeners
-        Button deleteBtn = view.findViewById(R.id.friendRequestDeleteButton);
-        Button addBtn = view.findViewById(R.id.friendRequestAddButton);
+        Button deleteBtn = view.findViewById(R.id.emergencyContactDeleteButton);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                FirebaseDBHelper.removeItem(dbreqref, list.get(position));
-                list.remove(position); //or some other task
+                FirebaseDBHelper.removeItem(dbconref, list.get(position));
+                list.remove(position);
                 notifyDataSetChanged();
             }
         });
-        addBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                FirebaseDBHelper.insertItem(dbfriendref, list.get(position));
-                FirebaseDBHelper.removeItem(dbreqref, list.get(position));
-                list.remove(position); //or some other task
-                notifyDataSetChanged();
-            }
-        });
-
         return view;
     }
 }
