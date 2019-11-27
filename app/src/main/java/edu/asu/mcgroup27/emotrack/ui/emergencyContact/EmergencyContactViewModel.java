@@ -1,14 +1,14 @@
-package edu.asu.mcgroup27.emotrack.ui.gallery;
+package edu.asu.mcgroup27.emotrack.ui.emergencyContact;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class EmergencyContactViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public EmergencyContactViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is gallery fragment");
     }
