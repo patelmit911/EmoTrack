@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.ui.home.HomeFragment;
 
 public class CustomAdapter  extends BaseAdapter {
@@ -83,11 +84,11 @@ public class CustomAdapter  extends BaseAdapter {
         TextView name = new TextView(adapterContext);
         TextView length = new TextView(adapterContext);
 
-        if (SymphonyMainActivity.selectedTab == 10) {
+        /*if (SymphonyMainActivity.selectedTab == 10) {
             CheckBox cb = new CheckBox(adapterContext);
             cb.setClickable(true);
             row.addView(cb);
-        }
+        }*/
 
         if (item.getThmb() != null) {
             image.setImageBitmap(item.getThmb());
@@ -95,7 +96,7 @@ public class CustomAdapter  extends BaseAdapter {
             image.setScaleType(ImageView.ScaleType.FIT_XY);
             row.addView(image);
         } else {
-            image.setImageResource(R.drawable.music);
+            image.setImageResource(R.drawable.ic_menu_share);
             image.setLayoutParams(new ViewGroup.LayoutParams(width, height));
             image.setScaleType(ImageView.ScaleType.FIT_XY);
             row.addView(image);
