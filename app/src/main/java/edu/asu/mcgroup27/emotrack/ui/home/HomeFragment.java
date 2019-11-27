@@ -2,7 +2,9 @@ package edu.asu.mcgroup27.emotrack.ui.home;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import edu.asu.mcgroup27.emotrack.MainActivity;
 import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.ui.CustomAdapter;
@@ -35,8 +38,8 @@ public class HomeFragment extends Fragment {
     private String uName = "";
     private CustomAdapter friendAdapter;
     static ListView friendListView;
-    static ArrayList<DisplayContent> friendlist = new ArrayList<DisplayContent>();
     Dialog register;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, final Bundle savedInstanceState) {
@@ -53,28 +56,25 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                register = onCreateDialog(savedBundle);
+                register = onCreateDialog();
                 register.show();
             }
         });
 
-        friendListView = getActivity().findViewById(R.id.videolistView);
-        friendAdapter = new CustomAdapter(this, friendlist);
+        friendListView = getActivity().findViewById(R.id.friendListView);
+        friendAdapter = new CustomAdapter(this, MainActivity.friendlist);
+
+
     }
 
     public void saveUserName() {
         EditText et = register.findViewById(R.id.username);
         uName = et.getText().toString();
         Log.v(TAG, "<Suprateem>saveUserName: " + uName);
-
-        try {
-            fetchTwitterInfo(uName);
-        } catch (TwitterException e) {
-            e.printStackTrace();
-        }
+//Todo: @Dhaval: call your get DB function from here
     }
 
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = requireActivity().getLayoutInflater();

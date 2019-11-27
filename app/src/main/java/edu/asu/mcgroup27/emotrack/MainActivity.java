@@ -31,11 +31,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import edu.asu.mcgroup27.emotrack.messaging.SendMessageTask;
+import edu.asu.mcgroup27.emotrack.ui.DisplayContent;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView profileEmailTextView;
     private ImageView profileImageView;
 
+    public static ArrayList<DisplayContent> friendlist = new ArrayList<DisplayContent>();
+    Thread friendThread;
 
     private final String TAG = "SignInActivity";
 
@@ -124,7 +129,51 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        friendThread = new Thread(new Runnable() {
+            @SuppressWarnings("deprecation")
+            public void run() {
+                Log.i("thread", "run");
+                //video_start = true;
+                friendlist = new ArrayList<DisplayContent>();
+
+                // code to update friendlist goes here
+                /*video_cursor = managedQuery(videoSrc, null, null, null, null);
+
+                if (video_cursor.moveToFirst()) {
+                    do {
+                        DisplayContent obj = new DisplayContent();
+                        id = video_cursor.getInt(video_cursor
+                                .getColumnIndex("_id"));
+                        name = video_cursor.getString(video_cursor
+                                .getColumnIndex("title"));
+                        duration = video_cursor.getString(video_cursor
+                                .getColumnIndex("duration"));
+                        path = video_cursor.getString(video_cursor
+                                .getColumnIndex("_data"));
+                        duration = calcDuration(duration);
+
+                        obj.setId(id);
+                        obj.setName(name);
+                        obj.setDuration(duration);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inSampleSize = 1;
+                        obj.setThmb(MediaStore.Video.Thumbnails
+                                .getThumbnail(getContentResolver(), id,
+                                        MediaStore.Video.Thumbnails.MICRO_KIND,
+                                        options));
+                        obj.setMediaUri(path);
+
+                        videolist.add(obj);
+
+                    } while (video_cursor.moveToNext());
+                }*/
+            }
+        });
     }
 
     @Override
