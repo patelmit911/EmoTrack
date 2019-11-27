@@ -33,6 +33,7 @@ public class FirebaseDBHelper {
                 .child("requests");
     }
 
+
     public static void getUserFriendReqs(String email, final UserDBRefListener listener) {
         getUserIDRef(email, new UserDBRefListener() {
             @Override
@@ -40,6 +41,13 @@ public class FirebaseDBHelper {
                 listener.onObtained(databaseReference.child("requests"));
             }
         });
+    }
+
+    public static DatabaseReference getUserFriends() {
+        return FirebaseDB.getInstance().getReference("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("friends");
+
     }
 
     public static DatabaseReference getUser() {
