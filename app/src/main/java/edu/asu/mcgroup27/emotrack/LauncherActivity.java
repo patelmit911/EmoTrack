@@ -83,7 +83,7 @@ public class LauncherActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 DatabaseReference userListRef = FirebaseDB.getInstance().getReference("userlist");
                 userListRef.child(user.getUid()).setValue(user.getEmail());
-                FirebaseDBHelper.getUserIDRef("dhaval0024@gmail.com");
+                //FirebaseDBHelper.getUserIDRef("dhaval0024@gmail.com");
 
                 FirebaseMessaging.getInstance().subscribeToTopic("weather")
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

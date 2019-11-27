@@ -17,11 +17,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 import edu.asu.mcgroup27.emotrack.MainActivity;
 import edu.asu.mcgroup27.emotrack.R;
+import edu.asu.mcgroup27.emotrack.database.FirebaseDB;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.ui.CustomAdapter;
 import edu.asu.mcgroup27.emotrack.ui.DisplayContent;
@@ -58,6 +60,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 register = onCreateDialog();
                 register.show();
+
             }
         });
 
@@ -74,7 +77,17 @@ public class HomeFragment extends Fragment {
 //Todo: @Dhaval: call your get DB function from here
     }
 
+
+    public void sendFriendRequest() {
+        EditText et = register.findViewById(R.id.username);
+        uName = et.getText().toString();
+        //FirebaseDBHelper.insertItem(FirebaseDBHelper.getUserFriendReqs(uName), FirebaseAuth.getInstance().getCurrentUser().getEmail());
+    }
+
+    //public Dialog onCreateDialog(Bundle savedInstanceState) {
+
     public Dialog onCreateDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -86,7 +99,8 @@ public class HomeFragment extends Fragment {
                 .setPositiveButton(R.string.register, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        saveUserName();
+                        //saveUserName();
+                        sendFriendRequest();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
