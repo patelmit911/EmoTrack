@@ -69,6 +69,12 @@ public class FirebaseDBHelper {
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
+    public static DatabaseReference getUserMetaData() {
+        return FirebaseDB.getInstance().getReference("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("data");
+    }
+
     public static void getUser(String email, final UserDBRefListener listener) {
         getUserIDRef(email, new UserDBRefListener() {
             @Override
