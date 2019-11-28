@@ -16,10 +16,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 
 import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.ui.home.HomeFragment;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class CustomAdapter  extends BaseAdapter {
     private final String TAG = "CustomAdapter";
@@ -27,14 +31,16 @@ public class CustomAdapter  extends BaseAdapter {
     private Activity activity;
     private ArrayList<DisplayContent> data;
     private static LayoutInflater inflater;
+    private Context context;
     int width, height;
 
     public CustomAdapter(HomeFragment homeFragment,
-                         ArrayList<DisplayContent> friendlist) {
+                         ArrayList<DisplayContent> friendlist, Context context) {
         super();
 
         this.activity = homeFragment.getActivity();
         this.data = friendlist;
+        this.context = context;
 
     }
 
@@ -79,6 +85,8 @@ public class CustomAdapter  extends BaseAdapter {
         LinearLayout row = new LinearLayout(adapterContext);
         row.setOrientation(LinearLayout.HORIZONTAL);
         ImageView image = new ImageView(adapterContext);
+        image.setMaxWidth(R.dimen.list_image_size);
+        image.setMaxHeight(R.dimen.list_image_size);
         LinearLayout mediaData = new LinearLayout(adapterContext);
         TextView name = new TextView(adapterContext);
         TextView length = new TextView(adapterContext);
@@ -89,7 +97,7 @@ public class CustomAdapter  extends BaseAdapter {
             row.addView(cb);
         }*/
 
-        if (item.getThmb() != null) {
+        /*if (item.getThmb() != null) {
             Log.v(TAG,"<Suprateem>thumb is not null");
             image.setImageBitmap(item.getThmb());
             image.setLayoutParams(new ViewGroup.LayoutParams(width, height));
@@ -100,7 +108,15 @@ public class CustomAdapter  extends BaseAdapter {
             image.setLayoutParams(new ViewGroup.LayoutParams(width, height));
             image.setScaleType(ImageView.ScaleType.FIT_XY);
             row.addView(image);
-        }
+        }*/
+        Glide.with(context)
+                .load(item.getThmb())
+                .centerCrop()
+                .crossFade()
+                .bitmapTransform(new CropCircleTransformation(context))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(image);
+        row.addView(image);
         mediaData.setOrientation(LinearLayout.VERTICAL);
 
         name.setSingleLine(true);

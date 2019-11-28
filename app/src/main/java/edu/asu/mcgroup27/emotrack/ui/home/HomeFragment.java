@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
         });
 
         friendListView = getActivity().findViewById(R.id.friendListView);
-        friendAdapter = new CustomAdapter(this, friendlist);
+        friendAdapter = new CustomAdapter(this, friendlist, getContext());
 
         friendListView.setAdapter(friendAdapter);
     }
@@ -139,13 +139,8 @@ public class HomeFragment extends Fragment {
                         DisplayContent obj = new DisplayContent();
                         obj.setName(userMetaData.getDisplayName());
                         obj.setId(userMetaData.getTwitterID());
-                        Uri imageUri = Uri.parse(userMetaData.getPhotoURI());
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                            obj.setThmb(bitmap);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        obj.setThmb(userMetaData.getPhotoURI());
+
                         //userMetaData.
                         friendlist.add(obj);
                         if(friendAdapter != null)

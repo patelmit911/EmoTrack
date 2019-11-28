@@ -6,4 +6,5 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">12dp</dimen>
     <dimen name="list_height">600dp</dimen>
+    <dimen name="list_image_size">50dp</dimen>
 </resources>

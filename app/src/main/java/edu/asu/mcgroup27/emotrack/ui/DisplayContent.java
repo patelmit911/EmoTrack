@@ -5,17 +5,9 @@ import android.graphics.Bitmap;
 public class DisplayContent {
 
     private String name;
-    private Bitmap thmb;
+    private String thmb;
     private String id;
     private String mediaUri;
-
-    public String getMediaUri() {
-        return mediaUri;
-    }
-
-    public void setMediaUri(String mediaUri) {
-        this.mediaUri = mediaUri;
-    }
 
     public String getId() {
         return id;
@@ -25,11 +17,11 @@ public class DisplayContent {
         this.id = id;
     }
 
-    public Bitmap getThmb() {
+    public String getThmb() {
         return thmb;
     }
 
-    public void setThmb(Bitmap thmb) {
+    public void setThmb(String thmb) {
         this.thmb = thmb;
     }
 
