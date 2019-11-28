@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ import edu.asu.mcgroup27.emotrack.MainActivity;
 import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDB;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
+import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
 import edu.asu.mcgroup27.emotrack.ui.CustomAdapter;
 import edu.asu.mcgroup27.emotrack.ui.DisplayContent;
 import twitter4j.TwitterException;
@@ -74,6 +76,7 @@ public class HomeFragment extends Fragment {
         EditText et = register.findViewById(R.id.username);
         uName = et.getText().toString();
         Log.v(TAG, "<Suprateem>saveUserName: " + uName);
+
 //Todo: @Dhaval: call your get DB function from here
     }
 
@@ -81,7 +84,12 @@ public class HomeFragment extends Fragment {
     public void sendFriendRequest() {
         EditText et = register.findViewById(R.id.username);
         uName = et.getText().toString();
-        //FirebaseDBHelper.insertItem(FirebaseDBHelper.getUserFriendReqs(uName), FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        FirebaseDBHelper.getUserFriendReqs(uName, new UserDBRefListener() {
+            @Override
+            public void onObtained(DatabaseReference databaseReference) {
+                FirebaseDBHelper.insertItem(databaseReference, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            }
+        });
     }
 
     //public Dialog onCreateDialog(Bundle savedInstanceState) {
