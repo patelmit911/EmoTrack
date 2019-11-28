@@ -2,11 +2,7 @@ package edu.asu.mcgroup27.emotrack.ui.home;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,16 +22,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import edu.asu.mcgroup27.emotrack.MainActivity;
 import edu.asu.mcgroup27.emotrack.R;
+import edu.asu.mcgroup27.emotrack.adapters.HomeListAdapter;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
 import edu.asu.mcgroup27.emotrack.database.UserMetaData;
 import edu.asu.mcgroup27.emotrack.database.UserMetaDataListener;
-import edu.asu.mcgroup27.emotrack.ui.CustomAdapter;
 import edu.asu.mcgroup27.emotrack.ui.DisplayContent;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -48,7 +42,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private Bundle savedBundle;
     private String uName = "";
-    private CustomAdapter friendAdapter;
+    private HomeListAdapter friendAdapter;
     static ListView friendListView;
     private Dialog register;
     public static ArrayList<DisplayContent> friendlist = new ArrayList<DisplayContent>();
@@ -59,8 +53,12 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         savedBundle = savedInstanceState;
 
-        friendlist = new ArrayList<DisplayContent>();
-        getFriendList();
+        /*friendlist = new ArrayList<DisplayContent>();
+        getFriendList();*/
+        friendListView = root.findViewById(R.id.friendListView);
+        friendAdapter = new HomeListAdapter(getContext());
+
+        friendListView.setAdapter(friendAdapter);
 
         return root;
     }
@@ -80,11 +78,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-        friendListView = getActivity().findViewById(R.id.friendListView);
-        friendAdapter = new CustomAdapter(this, friendlist, getContext());
-
-        friendListView.setAdapter(friendAdapter);
     }
 
     public void sendFriendRequest() {
@@ -125,7 +118,7 @@ public class HomeFragment extends Fragment {
         return builder.create();
     }
 
-    public void getFriendList() {
+    /*public void getFriendList() {
         DatabaseReference fr = FirebaseDBHelper.getUserFriends();
         fr.addChildEventListener(new ChildEventListener() {
             @Override
@@ -170,7 +163,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-    }
+    }*/
 
     public void fetchTwitterInfo(String userHandle) throws TwitterException {
 
