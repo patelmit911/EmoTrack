@@ -7,17 +7,20 @@
     <TextView
         android:id="@+id/friendRequestListItem"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:paddingLeft="8dp"
+        android:layout_marginLeft="54dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
         android:textSize="20dp"
         android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/emergencyContactDeleteButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="25dp"
@@ -25,4 +28,12 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_delete"
         android:tint="#00FFFFFF" />
+
+    <ImageView
+        android:id="@+id/emergencyContactImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:paddingLeft="20dp"
+        app:srcCompat="@android:drawable/star_big_off" />
 </RelativeLayout>

@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +26,9 @@ import java.util.ArrayList;
 import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
+import edu.asu.mcgroup27.emotrack.database.UserMetaData;
+import edu.asu.mcgroup27.emotrack.database.UserMetaDataListener;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list;
@@ -87,12 +93,31 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.fragment_friend_request_custom, null);
         }
 
-        TextView listItemText = view.findViewById(R.id.friendRequestListItem);
+        final TextView listItemText = view.findViewById(R.id.friendRequestListItem);
         listItemText.setText(list.get(position));
 
         ImageButton deleteBtn = view.findViewById(R.id.friendRequestDeleteButton);
         ImageButton addBtn = view.findViewById(R.id.friendRequestAddButton);
-
+        final ImageView imageView = view.findViewById(R.id.friendRequestImage);
+        FirebaseDBHelper.getUserMetaData(list.get(position), new UserMetaDataListener() {
+            @Override
+            public void onObtained(UserMetaData userMetaData) {
+                String image = userMetaData.getPhotoURI();
+                if (image != null) {
+                    Glide.with(context)
+                            .load(image)
+                            .centerCrop()
+                            .crossFade()
+                            .bitmapTransform(new CropCircleTransformation(context))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imageView);
+                }
+                String displayName = userMetaData.getDisplayName();
+                if (displayName != null){
+                    listItemText.setText(displayName);
+                }
+            }
+        });
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
