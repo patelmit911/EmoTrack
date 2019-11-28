@@ -5,20 +5,9 @@ import android.graphics.Bitmap;
 public class DisplayContent {
 
     private String name;
-    private String duration;
     private Bitmap thmb;
-    private int id;
+    private String id;
     private String mediaUri;
-    private long album_id;
-
-
-    public long getAlbum_id() {
-        return album_id;
-    }
-
-    public void setAlbum_id(long album_id) {
-        this.album_id = album_id;
-    }
 
     public String getMediaUri() {
         return mediaUri;
@@ -28,11 +17,11 @@ public class DisplayContent {
         this.mediaUri = mediaUri;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -51,13 +40,4 @@ public class DisplayContent {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
 }

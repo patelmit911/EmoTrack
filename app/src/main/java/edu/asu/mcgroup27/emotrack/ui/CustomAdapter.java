@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.ui.home.HomeFragment;
 
 public class CustomAdapter  extends BaseAdapter {
+    private final String TAG = "CustomAdapter";
 
     private Activity activity;
     private ArrayList<DisplayContent> data;
@@ -39,26 +41,23 @@ public class CustomAdapter  extends BaseAdapter {
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public View getView(int position, View convertview, ViewGroup parent) {
-        // TODO Auto-generated method stub
+        Log.v(TAG,"<Suprateem>getView");
 
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -91,6 +90,7 @@ public class CustomAdapter  extends BaseAdapter {
         }*/
 
         if (item.getThmb() != null) {
+            Log.v(TAG,"<Suprateem>thumb is not null");
             image.setImageBitmap(item.getThmb());
             image.setLayoutParams(new ViewGroup.LayoutParams(width, height));
             image.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -109,7 +109,6 @@ public class CustomAdapter  extends BaseAdapter {
         name.setText(item.getName());
         mediaData.addView(name);
 
-        length.setText(item.getDuration());
         mediaData.addView(length);
 
         row.addView(mediaData);
