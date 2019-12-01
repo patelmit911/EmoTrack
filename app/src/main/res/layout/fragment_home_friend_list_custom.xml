@@ -7,10 +7,11 @@
     <TextView
         android:id="@+id/friendListName"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="75dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="54dp"
+        android:layout_marginLeft="70dp"
+        android:gravity="center"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="5dp"
@@ -19,8 +20,8 @@
 
     <ImageView
         android:id="@+id/friendListImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_centerVertical="true"
         android:paddingLeft="20dp"
         app:srcCompat="@android:drawable/star_big_off" />
