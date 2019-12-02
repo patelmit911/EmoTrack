@@ -11,15 +11,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
@@ -28,8 +24,6 @@ import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.adapters.HomeListAdapter;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
-import edu.asu.mcgroup27.emotrack.database.UserMetaData;
-import edu.asu.mcgroup27.emotrack.database.UserMetaDataListener;
 import edu.asu.mcgroup27.emotrack.ui.DisplayContent;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;

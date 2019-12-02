@@ -1,6 +1,8 @@
 package edu.asu.mcgroup27.emotrack.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
+import edu.asu.mcgroup27.emotrack.MainActivity;
 import edu.asu.mcgroup27.emotrack.R;
+import edu.asu.mcgroup27.emotrack.VizActivity;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
 import edu.asu.mcgroup27.emotrack.database.UserMetaData;
@@ -31,6 +35,8 @@ import edu.asu.mcgroup27.emotrack.database.UserMetaDataListener;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class HomeListAdapter extends BaseAdapter implements ListAdapter {
+    private final String TAG = "HomeListAdapter";
+
     private ArrayList<String> list;
     private Context context;
     private DatabaseReference dbreqref;
@@ -113,6 +119,27 @@ public class HomeListAdapter extends BaseAdapter implements ListAdapter {
                 if (displayName != null){
                     listItemText.setText(displayName);
                 }
+            }
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String requestFrom = list.get(position);
+                FirebaseDBHelper.getUserMetaData(requestFrom, new UserMetaDataListener() {
+                    @Override
+                    public void onObtained(UserMetaData userMetaData) {
+                        String twitterID = userMetaData.getTwitterID();
+                        String cur_user = userMetaData.getEmail();
+                        Log.v(TAG, "<Suprateem>twitterID: " + twitterID);
+
+                        Intent intent = new Intent(context, VizActivity.class);
+                        intent.putExtra("twitterID", twitterID);
+                        intent.putExtra("cur_user", cur_user);
+                        context.startActivity(intent);
+                    }
+                });
+
             }
         });
 
