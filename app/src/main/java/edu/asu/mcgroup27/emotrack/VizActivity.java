@@ -9,12 +9,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -39,6 +41,12 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +66,9 @@ import java.util.List;
 import edu.asu.mcgroup27.emotrack.adapters.DayAxisValueFormatter;
 import edu.asu.mcgroup27.emotrack.adapters.MyValueFormatter;
 import edu.asu.mcgroup27.emotrack.adapters.XYMarkerView;
+import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
+import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
+import edu.asu.mcgroup27.emotrack.messaging.SendMessageTask;
 
 public class VizActivity extends AppCompatActivity {
     private final String TAG = "VizActivity";
@@ -212,6 +223,29 @@ public class VizActivity extends AppCompatActivity {
 
             chart.setData(data);
         }
+    }
+
+    public void sendNotification(View view) {
+        FirebaseDBHelper.getUserEmergencyContact(currentUserEmail, new UserDBRefListener() {
+            @Override
+            public void onObtained(DatabaseReference databaseReference) {
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        for(DataSnapshot emergencyContact : dataSnapshot.getChildren()) {
+                            SendMessageTask.sendNotification(emergencyContact.getValue().toString(), "Attention for " + currentUserEmail, "Notification from " + user.getEmail());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
     }
 
     public class DownloadDataTask extends AsyncTask<String, Void, JSONObject> {

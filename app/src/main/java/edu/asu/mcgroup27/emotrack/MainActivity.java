@@ -25,12 +25,16 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import edu.asu.mcgroup27.emotrack.database.FirebaseDB;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.database.UserMetaData;
 import edu.asu.mcgroup27.emotrack.database.UserMetaDataListener;
@@ -120,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-//        SendMessageTask sendMessageTask = new SendMessageTask();
-//        sendMessageTask.execute("weather", "HELLO", "FROM app");
+        SendMessageTask.sendNotification("dhaval0024@gmail.com", "NEW", "static");
+
+
 
         Log.v(TAG, "<Suprateem>biometric setting: " + Util.getBiometric(getApplicationContext()));
 
