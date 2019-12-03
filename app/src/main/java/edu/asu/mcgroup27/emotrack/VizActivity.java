@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +40,18 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.MPPointF;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,6 +141,9 @@ public class VizActivity extends AppCompatActivity {
         setData(50,12);
 
         // chart.setDrawLegend(false);
+
+        DownloadDataTask downloadDataTask = new DownloadDataTask();
+        downloadDataTask.execute("realDonaldTrump", "50");
     }
 
     private void setData(int count, float range) {
@@ -195,6 +211,60 @@ public class VizActivity extends AppCompatActivity {
             data.setBarWidth(0.9f);
 
             chart.setData(data);
+        }
+    }
+
+    public class DownloadDataTask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... strings) {
+
+            JSONObject result = null;
+
+            try {
+                URL url = new URL("http://18.220.0.189:5000/getData");
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setRequestProperty("Content-Type", "application/json");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+
+                JSONObject body = new JSONObject();
+                body.put("twitter", strings[0]);
+                body.put("number", Integer.valueOf(strings[1]));
+
+                DataOutputStream os = new DataOutputStream(httpURLConnection.getOutputStream());
+                os.writeBytes(body.toString());
+                os.flush();
+                os.close();
+
+
+                if(httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    String line = "";
+                    StringBuilder stringBuilder = new StringBuilder();
+                    while ((line = responseStreamReader.readLine()) != null) {
+                        stringBuilder.append(line);
+                    }
+                    responseStreamReader.close();
+                    String response = stringBuilder.toString();
+                    result = new JSONObject(response);
+                }
+                httpURLConnection.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            int i = 0;
         }
     }
 }
