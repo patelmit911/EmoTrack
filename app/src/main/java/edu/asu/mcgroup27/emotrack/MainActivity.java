@@ -1,5 +1,8 @@
 package edu.asu.mcgroup27.emotrack;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,8 +12,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.MenuItem;
@@ -34,29 +35,26 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import edu.asu.mcgroup27.emotrack.database.FirebaseDB;
+
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
-import edu.asu.mcgroup27.emotrack.database.UserMetaData;
-import edu.asu.mcgroup27.emotrack.database.UserMetaDataListener;
 import edu.asu.mcgroup27.emotrack.messaging.SendMessageTask;
-import edu.asu.mcgroup27.emotrack.ui.DisplayContent;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
+
+    private final String TAG = "SignInActivity";
 
     private AppBarConfiguration mAppBarConfiguration;
 
     private TextView profileNameTextView;
     private TextView profileEmailTextView;
     private ImageView profileImageView;
-
-    private final String TAG = "SignInActivity";
+    private DatabaseReference dbTwitterID;
+    private Dialog addTwitterDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +63,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         updateUserMetaData();
-
-
-        /*FloatingActionButton fab = findViewById(R.id.addFriendFloatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Sending Friend Request", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                FirebaseDBHelper.getUserFriendReqs().push().setValue("TEST");
-            }
-        });*/
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -114,22 +101,10 @@ public class MainActivity extends AppCompatActivity {
                         .bitmapTransform(new CropCircleTransformation(getApplicationContext()))
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(profileImageView);
-                /*Glide.with(getApplicationContext())
-                        .load("")
-                        .placeholder(R.drawable.navback)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(navbg);*/
-
             }
         }
 
         SendMessageTask.sendNotification("dhaval0024@gmail.com", "NEW", "static");
-
-
-
-        Log.v(TAG, "<Suprateem>biometric setting: " + Util.getBiometric(getApplicationContext()));
-
     }
 
     @Override
@@ -141,6 +116,38 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        Log.v(TAG, "onResume");
+
+        dbTwitterID = FirebaseDBHelper.getUserMetaDataRef().child("twitterID");
+        dbTwitterID.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.v(TAG, "<Suprateem>onDataChange");
+                String twitter_username = dataSnapshot.getValue().toString();
+                if (twitter_username == null || twitter_username.isEmpty()) {
+                    Log.v(TAG, "<Suprateem>No Twitter ID provided");
+                    addTwitterDialog = onCreateDialog();
+                    addTwitterDialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public Dialog onCreateDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.add_twitter)
+                .setNeutralButton(R.string.okay, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        return builder.create();
     }
 
     @Override

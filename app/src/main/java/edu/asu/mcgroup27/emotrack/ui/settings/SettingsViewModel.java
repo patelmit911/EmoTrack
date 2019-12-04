@@ -1,4 +1,4 @@
-package edu.asu.mcgroup27.emotrack.ui.tools;
+package edu.asu.mcgroup27.emotrack.ui.settings;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

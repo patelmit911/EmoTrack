@@ -1,7 +1,8 @@
-package edu.asu.mcgroup27.emotrack.ui.tools;
+package edu.asu.mcgroup27.emotrack.ui.settings;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,35 +13,25 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.Util;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
-import edu.asu.mcgroup27.emotrack.database.UserMetaData;
-import edu.asu.mcgroup27.emotrack.database.UserMetaDataListener;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class SettingsFragment extends Fragment {
 
-    private SettingsViewModel toolsViewModel;
+    private final String TAG = "SettingsFragment";
+
     Dialog addTwitterDialog;
     private DatabaseReference dbtwitteridref;
     String twitter_username;
@@ -51,15 +42,13 @@ public class SettingsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        toolsViewModel =
-                ViewModelProviders.of(this).get(SettingsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
         twitterTextView = root.findViewById(R.id.usernameTextView);
 
         //biometric feature setting
         final Switch bioSetting = root.findViewById(R.id.biometric_setting);
-        bioSetting.setChecked(Util.getBiometric(getContext()) == 1 ? true:false);
+        bioSetting.setChecked(Util.getBiometric(getContext()) == 1 ? true : false);
         bioSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -71,15 +60,13 @@ public class SettingsFragment extends Fragment {
         });
 
 
-        //get twitter username
-
+        // get twitter username
         dbtwitteridref = FirebaseDBHelper.getUserMetaDataRef().child("twitterID");
-
         dbtwitteridref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 twitter_username = dataSnapshot.getValue().toString();
-                if(twitter_username != null) {
+                if (twitter_username != null) {
                     twitterTextView.setText(twitter_username);
                 }
             }
@@ -89,13 +76,6 @@ public class SettingsFragment extends Fragment {
 
             }
         });
-
-
-
-
-        // click on add/edit button
-
-
         return root;
     }
 
@@ -127,13 +107,12 @@ public class SettingsFragment extends Fragment {
 
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-
-//                        Map<String,Object> taskMap = new HashMap<String,Object>();
-//                        taskMap.put("twitterid", "test");
-//                        dbtwitteridref.updateChildren(taskMap);
                         editTextTwitter = addTwitterDialog.findViewById(R.id.usernameEditText);
                         usernameEditText = editTextTwitter.getText().toString();
-                        dbtwitteridref.setValue(usernameEditText);
+                        Log.v(TAG, "<Suprateem>Twitter ID: " + usernameEditText + ", " +usernameEditText.isEmpty());
+                        if (usernameEditText != null && !usernameEditText.isEmpty()) {
+                            dbtwitteridref.setValue(usernameEditText);
+                        }
                     }
                 })
 

@@ -29,6 +29,8 @@
     <string name="register">Register</string>
     <string name="uname">Enter Email Address</string>
     <string name="cancel">Cancel</string>
+    <string name="add_twitter">Please add your Twitter ID to settings in order to enable visualization view</string>
+    <string name="okay">Okay!</string>
 
     <!-- text view to show user details -->
     <string name="com_twitter_sdk_android_CONSUMER_KEY">K9phmt7S3dMQuWWAxEF2tgD9g</string>

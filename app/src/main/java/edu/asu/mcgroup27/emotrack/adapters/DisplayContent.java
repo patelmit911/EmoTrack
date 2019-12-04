@@ -1,4 +1,4 @@
-package edu.asu.mcgroup27.emotrack.ui;
+package edu.asu.mcgroup27.emotrack.adapters;
 
 import android.graphics.Bitmap;
 

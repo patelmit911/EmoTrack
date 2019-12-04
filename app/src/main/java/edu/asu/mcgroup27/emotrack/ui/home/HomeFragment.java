@@ -24,7 +24,7 @@ import edu.asu.mcgroup27.emotrack.R;
 import edu.asu.mcgroup27.emotrack.adapters.HomeListAdapter;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
-import edu.asu.mcgroup27.emotrack.ui.DisplayContent;
+import edu.asu.mcgroup27.emotrack.adapters.DisplayContent;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
@@ -47,8 +47,6 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         savedBundle = savedInstanceState;
 
-        /*friendlist = new ArrayList<DisplayContent>();
-        getFriendList();*/
         friendListView = root.findViewById(R.id.friendListView);
         friendAdapter = new HomeListAdapter(getContext());
 
@@ -85,22 +83,15 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    //public Dialog onCreateDialog(Bundle savedInstanceState) {
-
     public Dialog onCreateDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater.inflate(R.layout.dialog_signin, null))
-                // Add action buttons
                 .setPositiveButton(R.string.register, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //saveUserName();
                         sendFriendRequest();
                     }
                 })
