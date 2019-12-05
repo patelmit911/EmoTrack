@@ -61,6 +61,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import edu.asu.mcgroup27.emotrack.adapters.DayAxisValueFormatter;
@@ -76,6 +77,10 @@ public class VizActivity extends AppCompatActivity {
     private BarChart chart;
     private String twitterID;
     private String currentUserEmail;
+    private int count = 0;
+    private int emotion_index = 0;
+    private Iterator<String> iter;
+    private double[] emotion = new double[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +159,7 @@ public class VizActivity extends AppCompatActivity {
         // chart.setDrawLegend(false);
 
         DownloadDataTask downloadDataTask = new DownloadDataTask();
-        downloadDataTask.execute("realDonaldTrump", "50");
+        downloadDataTask.execute(twitterID, "50");
     }
 
     private void setData(int count, float range) {
@@ -292,13 +297,103 @@ public class VizActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            Log.v(TAG, "<Suprateem>Result from cloud: " + result);
 
             return result;
         }
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-            int i = 0;
+            Log.v(TAG, "<Suprateem>onPostExecute: " +jsonObject.toString());
+            try {
+                emotion_index = 0;
+                Iterator<String> iter1 = jsonObject.keys();
+                while(iter1.hasNext()) {
+                    JSONObject emo_obj = jsonObject.getJSONObject(iter1.next());
+                    iter = emo_obj.keys();
+                    count  = 0;
+                    double dominance = 0.0;
+                    while(iter.hasNext()) {
+                        String key = iter.next();
+                        dominance += emo_obj.getDouble(key);
+                        count += 1;
+                    }
+                    dominance = dominance / count;
+                    emotion[emotion_index] = dominance;
+                    emotion_index += 1;
+                }
+
+                /*JSONObject anger = jsonObject.getJSONObject("anger_d");
+                JSONObject anticipation = jsonObject.getJSONObject("anticipation_d");
+                JSONObject disgust = jsonObject.getJSONObject("disgust_d");
+                JSONObject fear = jsonObject.getJSONObject("fear_d");
+                JSONObject joy = jsonObject.getJSONObject("joy_d");
+                JSONObject negative = jsonObject.getJSONObject("negative_d");
+                JSONObject positive = jsonObject.getJSONObject("positive_d");
+                JSONObject sadness = jsonObject.getJSONObject("sadness_d");
+                JSONObject surprise = jsonObject.getJSONObject("surprise_d");
+                JSONObject trust = jsonObject.getJSONObject("trust_d");
+
+
+
+                iter = anger.keys();
+                count  = 0;
+                double anger_d = 0.0;
+                while(iter.hasNext()) {
+                    String key = iter.next();
+                    anger_d += anger.getDouble(key);
+                    count += 1;
+                }
+                anger_d = anger_d / count;
+                emotion[0] = anger_d;
+
+                iter = anticipation.keys();
+                count  = 0;
+                double anticipation_d = 0.0;
+                while(iter.hasNext()) {
+                    String key = iter.next();
+                    anticipation_d += anticipation.getDouble(key);
+                    count += 1;
+                }
+                anticipation_d = anger_d / count;
+                emotion[1] = anticipation_d;
+
+                iter = disgust.keys();
+                count  = 0;
+                double disgust_d = 0.0;
+                while(iter.hasNext()) {
+                    String key = iter.next();
+                    disgust_d += disgust.getDouble(key);
+                    count += 1;
+                }
+                disgust_d = disgust_d / count;
+                emotion[2] = disgust_d;
+
+                iter = fear.keys();
+                count  = 0;
+                double fear_d = 0.0;
+                while(iter.hasNext()) {
+                    String key = iter.next();
+                    fear_d += fear.getDouble(key);
+                    count += 1;
+                }
+                fear_d = fear_d / count;
+                emotion[3] = fear_d;
+
+                iter = joy.keys();
+                count  = 0;
+                double joy_d = 0.0;
+                while(iter.hasNext()) {
+                    String key = iter.next();
+                    joy_d += joy.getDouble(key);
+                    count += 1;
+                }
+                joy_d = joy_d / count;
+                emotion[3] = joy_d;*/
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
