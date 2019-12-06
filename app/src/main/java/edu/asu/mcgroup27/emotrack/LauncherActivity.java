@@ -60,6 +60,7 @@ public class LauncherActivity extends AppCompatActivity {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setAvailableProviders(providers)
+                            .setLogo(R.drawable.login_logo)
                             .build(),
                     RC_SIGN_IN);
         } else {
