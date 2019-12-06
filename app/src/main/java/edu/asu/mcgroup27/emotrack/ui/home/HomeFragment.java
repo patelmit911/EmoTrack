@@ -33,7 +33,6 @@ import twitter4j.conf.ConfigurationBuilder;
 public class HomeFragment extends Fragment {
     private final String TAG = "HomeFragment";
 
-    private HomeViewModel homeViewModel;
     private Bundle savedBundle;
     private String uName = "";
     private HomeListAdapter friendAdapter;
@@ -59,7 +58,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Log.v(TAG, "<Suprateem>onResume");
+        Log.v(TAG, "onResume");
 
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -103,53 +102,6 @@ public class HomeFragment extends Fragment {
         return builder.create();
     }
 
-    /*public void getFriendList() {
-        DatabaseReference fr = FirebaseDBHelper.getUserFriends();
-        fr.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String friend = dataSnapshot.getValue().toString(); // getEmail
-                FirebaseDBHelper.getUserMetaData(friend, new UserMetaDataListener() {
-                    @Override
-                    public void onObtained(UserMetaData userMetaData) {
-                        Log.v(TAG, "<Suprateem>friends email: "+ userMetaData.getEmail());
-                        Log.v(TAG, "<Suprateem>friends photo URI: " + userMetaData.getPhotoURI());
-                        DisplayContent obj = new DisplayContent();
-                        obj.setName(userMetaData.getDisplayName());
-                        obj.setId(userMetaData.getTwitterID());
-                        obj.setThmb(userMetaData.getPhotoURI());
-
-                        //userMetaData.
-                        friendlist.add(obj);
-                        if(friendAdapter != null)
-                            friendAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }*/
-
     public void fetchTwitterInfo(String userHandle) throws TwitterException {
 
         Thread thread = new Thread(new Runnable() {
@@ -168,7 +120,7 @@ public class HomeFragment extends Fragment {
 
                     User user = twitter.showUser("sbhatt4g");
                     String profileImage = user.getProfileImageURL();
-                    Log.v(TAG, "<Suprateem>fetchTwitterInfo: " + profileImage);
+                    Log.v(TAG, "fetchTwitterInfo: " + profileImage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

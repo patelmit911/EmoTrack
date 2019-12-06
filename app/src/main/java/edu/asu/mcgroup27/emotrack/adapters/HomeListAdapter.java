@@ -131,7 +131,6 @@ public class HomeListAdapter extends BaseAdapter implements ListAdapter {
                     public void onObtained(UserMetaData userMetaData) {
                         String twitterID = userMetaData.getTwitterID();
                         String cur_user = userMetaData.getEmail();
-                        Log.v(TAG, "<Suprateem>twitterID: " + twitterID);
 
                         Intent intent = new Intent(context, VizActivity.class);
                         intent.putExtra("twitterID", twitterID);
@@ -142,7 +141,6 @@ public class HomeListAdapter extends BaseAdapter implements ListAdapter {
 
             }
         });
-
         return view;
     }
 }

@@ -103,8 +103,6 @@ public class MainActivity extends AppCompatActivity {
                         .into(profileImageView);
             }
         }
-
-        SendMessageTask.sendNotification("dhaval0024@gmail.com", "NEW", "static");
     }
 
     @Override
@@ -122,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
         dbTwitterID.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.v(TAG, "<Suprateem>onDataChange");
+                Log.v(TAG, "onDataChange");
                 String twitter_username = dataSnapshot.getValue().toString();
                 if (twitter_username == null || twitter_username.isEmpty()) {
-                    Log.v(TAG, "<Suprateem>No Twitter ID provided");
+                    Log.v(TAG, "No Twitter ID provided");
                     addTwitterDialog = onCreateDialog();
                     addTwitterDialog.show();
                 }

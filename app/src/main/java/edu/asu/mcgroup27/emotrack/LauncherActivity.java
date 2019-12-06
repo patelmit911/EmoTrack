@@ -46,7 +46,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Log.v(TAG, "<Suprateem>LauncherActivity!", new Throwable());
+
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
         Intent start;
@@ -66,7 +66,6 @@ public class LauncherActivity extends AppCompatActivity {
             start = new Intent(this, MainActivity.class);
             startActivity(start);
             showBiometricPrompt();
-            //Toast.makeText(getApplicationContext(),"Already signed in", Toast.LENGTH_LONG).show();
             LauncherActivity.this.finish();
         }
 
@@ -80,11 +79,9 @@ public class LauncherActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 DatabaseReference userListRef = FirebaseDB.getInstance().getReference("userlist");
                 userListRef.child(user.getUid()).setValue(user.getEmail());
-                //FirebaseDBHelper.getUserIDRef("dhaval0024@gmail.com");
 
                 FirebaseMessaging.getInstance().subscribeToTopic(user.getUid())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -101,23 +98,17 @@ public class LauncherActivity extends AppCompatActivity {
                 Intent start = new Intent(this, MainActivity.class);
                 startActivity(start);
                 LauncherActivity.this.finish();
-                // ...
             } else {
+                Toast.makeText(getApplicationContext(),getString(R.string.signin_failed), Toast.LENGTH_SHORT).show();
                 LauncherActivity.this.finish();
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
             }
         }
     }
 
     private void showBiometricPrompt() {
-        //Toast.makeText(getApplicationContext(),"Biometric Prompt", Toast.LENGTH_LONG).show();
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("BIOMETRIC LOGIN")
-                .setSubtitle("Log in using your biometric credentials")
-                // .setNegativeButtonText("Cancel")
+                .setTitle(getString(R.string.biometric_login))
+                .setSubtitle(getString(R.string.biometric_msg))
                 .setDeviceCredentialAllowed(true)
                 .build();
 
@@ -129,7 +120,7 @@ public class LauncherActivity extends AppCompatActivity {
                 super.onAuthenticationError(errorCode, errString);
                 showBiometricPrompt();
                 Toast.makeText(getApplicationContext(),
-                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                        getString(R.string.auth_error) + errString, Toast.LENGTH_SHORT)
                         .show();
             }
 
@@ -143,13 +134,11 @@ public class LauncherActivity extends AppCompatActivity {
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
-                Toast.makeText(getApplicationContext(), "Authentication failed",
+                Toast.makeText(getApplicationContext(), getString(R.string.auth_fail),
                         Toast.LENGTH_SHORT)
                         .show();
             }
         });
-
-
         biometricPrompt.authenticate(promptInfo);
     }
 
