@@ -65,17 +65,16 @@ public class LauncherActivity extends AppCompatActivity {
                             .build(),
                     RC_SIGN_IN);
         } else {
-            start = new Intent(this, MainActivity.class);
-            startActivity(start);
 
-            //check if Biometric feature is enabled
-            if(biometricUtil.getBiometric(this) == 1) {
-                //show Biometric prompt dialog
+            if(Util.getBiometric(getApplicationContext()) == 1) {
                 showBiometricPrompt();
             }
+            else {
+                start = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(start);
+                LauncherActivity.this.finish();
+            }
 
-            //Toast.makeText(getApplicationContext(),"Already signed in", Toast.LENGTH_LONG).show();
-            LauncherActivity.this.finish();
         }
 
     }
@@ -147,6 +146,9 @@ public class LauncherActivity extends AppCompatActivity {
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 BiometricPrompt.CryptoObject authenticatedCryptoObject = result.getCryptoObject();
+                Intent start = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(start);
+                LauncherActivity.this.finish();
             }
 
             @Override
@@ -155,6 +157,7 @@ public class LauncherActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Authentication failed",
                         Toast.LENGTH_SHORT)
                         .show();
+                showBiometricPrompt();
             }
         });
 
