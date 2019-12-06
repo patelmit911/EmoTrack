@@ -2,6 +2,7 @@ package edu.asu.mcgroup27.emotrack;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricConstants;
 import androidx.biometric.BiometricPrompt;
 
 import edu.asu.mcgroup27.emotrack.database.FirebaseDB;
@@ -67,10 +68,9 @@ public class LauncherActivity extends AppCompatActivity {
                     RC_SIGN_IN);
         } else {
 
-            if(Util.getBiometric(getApplicationContext()) == 1) {
+            if (Util.getBiometric(getApplicationContext()) == 1) {
                 showBiometricPrompt();
-            }
-            else {
+            } else {
                 start = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(start);
                 LauncherActivity.this.finish();
@@ -107,7 +107,7 @@ public class LauncherActivity extends AppCompatActivity {
                 startActivity(start);
                 LauncherActivity.this.finish();
             } else {
-                Toast.makeText(getApplicationContext(),getString(R.string.signin_failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.signin_failed), Toast.LENGTH_SHORT).show();
                 LauncherActivity.this.finish();
             }
         }
@@ -126,10 +126,17 @@ public class LauncherActivity extends AppCompatActivity {
             public void onAuthenticationError(int errorCode,
                                               @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
-                showBiometricPrompt();
+                Log.v(TAG, "onAuthenticationError: " + errorCode);
+
                 Toast.makeText(getApplicationContext(),
                         getString(R.string.auth_error) + errString, Toast.LENGTH_SHORT)
                         .show();
+
+                if (errorCode == BiometricConstants.ERROR_USER_CANCELED) {
+                    LauncherActivity.this.finish();
+                } else {
+                    showBiometricPrompt();
+                }
             }
 
             @Override
@@ -153,8 +160,4 @@ public class LauncherActivity extends AppCompatActivity {
         });
         biometricPrompt.authenticate(promptInfo);
     }
-
-
-
-
 }
