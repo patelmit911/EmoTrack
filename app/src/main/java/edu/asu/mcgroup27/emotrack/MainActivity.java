@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
         profileImageView = navHeaderView.findViewById(R.id.profileImageView);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user!=null) {
+        if (user != null) {
             Uri imageUri = user.getPhotoUrl();
-            if(imageUri != null) {
+            if (imageUri != null) {
                 int imageResolution = 256;
                 String path = imageUri.getPath();
                 path = "https://lh5.googleusercontent.com"
@@ -121,11 +121,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.v(TAG, "onDataChange");
-                String twitter_username = dataSnapshot.getValue().toString();
-                if (twitter_username == null || twitter_username.isEmpty()) {
-                    Log.v(TAG, "No Twitter ID provided");
-                    addTwitterDialog = onCreateDialog();
-                    addTwitterDialog.show();
+                if (dataSnapshot.getValue() != null) {
+                    String twitter_username = dataSnapshot.getValue().toString();
+                    if (twitter_username == null || twitter_username.isEmpty()) {
+                        Log.v(TAG, "No Twitter ID provided");
+                        addTwitterDialog = onCreateDialog();
+                        addTwitterDialog.show();
+                    }
                 }
             }
 
@@ -184,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
     private void updateUserMetaData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference ref = FirebaseDBHelper.getUserMetaDataRef();

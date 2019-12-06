@@ -65,9 +65,11 @@ public class SettingsFragment extends Fragment {
         dbtwitteridref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                twitter_username = dataSnapshot.getValue().toString();
-                if (twitter_username != null) {
-                    twitterTextView.setText(twitter_username);
+                if (dataSnapshot.getValue() != null) {
+                    twitter_username = dataSnapshot.getValue().toString();
+                    if (twitter_username != null) {
+                        twitterTextView.setText(twitter_username);
+                    }
                 }
             }
 
@@ -109,7 +111,7 @@ public class SettingsFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         editTextTwitter = addTwitterDialog.findViewById(R.id.usernameEditText);
                         usernameEditText = editTextTwitter.getText().toString();
-                        Log.v(TAG, "Twitter ID: " + usernameEditText + ", " +usernameEditText.isEmpty());
+                        Log.v(TAG, "Twitter ID: " + usernameEditText + ", " + usernameEditText.isEmpty());
                         if (usernameEditText != null && !usernameEditText.isEmpty()) {
                             dbtwitteridref.setValue(usernameEditText);
                         }
