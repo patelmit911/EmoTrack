@@ -55,7 +55,7 @@ public class VizActivity extends AppCompatActivity {
     public static final int[] EMOTION_COLORS = {
             Color.rgb(255, 0, 0),
             Color.rgb(0, 0, 255),
-            Color.rgb(255, 255, 0),
+            Color.rgb(75, 75, 25),
             Color.rgb(255, 0, 255),
             Color.rgb(127, 0, 255),
             Color.rgb(0, 255, 255),
