@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="16dp"
     android:paddingTop="16dp"
     android:paddingRight="16dp"
@@ -33,33 +33,33 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Anger"
+                    android:text="@string/emo_anger"
                     android:textStyle="bold"
-                    android:textColor="#FF0000"/>
+                    android:textColor="@color/color_anger"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Anticipation"
+                    android:text="@string/emo_anti"
                     android:textStyle="bold"
-                    android:textColor="#0000FF"/>
+                    android:textColor="@color/color_anti"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Disgust"
+                    android:text="@string/emo_disgust"
                     android:textStyle="bold"
-                    android:textColor="#FFFF00"/>
+                    android:textColor="@color/color_disgust"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fear"
+                    android:text="@string/emo_fear"
                     android:textStyle="bold"
-                    android:textColor="#FF00FF"/>
+                    android:textColor="@color/color_fear"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Joy"
+                    android:text="@string/emo_joy"
                     android:textStyle="bold"
-                    android:textColor="#7F00FF"/>
+                    android:textColor="@color/color_joy"/>
             </TableRow>
 
             <TableRow
@@ -68,33 +68,33 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Negative"
+                    android:text="@string/emo_negative"
                     android:textStyle="bold"
-                    android:textColor="#00FFFF"/>
+                    android:textColor="@color/color_negative"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Positive"
+                    android:text="@string/emo_positive"
                     android:textStyle="bold"
-                    android:textColor="#00FF00"/>
+                    android:textColor="@color/color_positive"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sadness"
+                    android:text="@string/emo_sad"
                     android:textStyle="bold"
-                    android:textColor="#808080"/>
+                    android:textColor="@color/color_sad"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Surprise"
+                    android:text="@string/emo_surprise"
                     android:textStyle="bold"
-                    android:textColor="#FF8000"/>
+                    android:textColor="@color/color_surprise"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Trust"
+                    android:text="@string/emo_trust"
                     android:textStyle="bold"
-                    android:textColor="#009688"/>
+                    android:textColor="@color/color_trust"/>
             </TableRow>
 
         </TableLayout>
