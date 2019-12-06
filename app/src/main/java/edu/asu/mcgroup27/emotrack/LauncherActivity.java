@@ -43,6 +43,8 @@ public class LauncherActivity extends AppCompatActivity {
     FirebaseAuth auth;
     private static final int RC_SIGN_IN = 9001;
 
+    Util biometricUtil = new Util();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +66,15 @@ public class LauncherActivity extends AppCompatActivity {
                             .build(),
                     RC_SIGN_IN);
         } else {
-            start = new Intent(this, MainActivity.class);
-            startActivity(start);
-            showBiometricPrompt();
-            LauncherActivity.this.finish();
+
+            if(Util.getBiometric(getApplicationContext()) == 1) {
+                showBiometricPrompt();
+            }
+            else {
+                start = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(start);
+                LauncherActivity.this.finish();
+            }
         }
 
     }
@@ -130,6 +137,9 @@ public class LauncherActivity extends AppCompatActivity {
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 BiometricPrompt.CryptoObject authenticatedCryptoObject = result.getCryptoObject();
+                Intent start = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(start);
+                LauncherActivity.this.finish();
             }
 
             @Override
@@ -138,6 +148,7 @@ public class LauncherActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.auth_fail),
                         Toast.LENGTH_SHORT)
                         .show();
+                showBiometricPrompt();
             }
         });
         biometricPrompt.authenticate(promptInfo);
