@@ -9,20 +9,20 @@
         android:scaleType="center"
         android:background="#FFFFBB33"
         android:gravity="center_vertical"
-        android:text="Add Member"
+        android:text="Add Twitter Username"
         android:textColor="@color/white"
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"/>
 
     <EditText
-        android:id="@+id/username"
-        android:inputType="textEmailAddress"
+        android:id="@+id/usernameEditText"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="@string/uname" />
+        android:hint="Twitter Username" />
 </LinearLayout>

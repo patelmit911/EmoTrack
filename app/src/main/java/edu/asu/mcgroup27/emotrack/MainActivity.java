@@ -1,5 +1,8 @@
 package edu.asu.mcgroup27.emotrack;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,8 +12,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.MenuItem;
@@ -25,11 +26,18 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
+import edu.asu.mcgroup27.emotrack.messaging.SendMessageTask;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 import android.view.Menu;
@@ -38,14 +46,15 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String TAG = "SignInActivity";
+
     private AppBarConfiguration mAppBarConfiguration;
 
     private TextView profileNameTextView;
     private TextView profileEmailTextView;
     private ImageView profileImageView;
-
-
-    private final String TAG = "SignInActivity";
+    private DatabaseReference dbTwitterID;
+    private Dialog addTwitterDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,28 +62,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
-        /*FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                FirebaseAuth.getInstance().signOut();
-                AuthUI.getInstance()
-                        .signOut(getApplicationContext())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // ...
-                                Intent intent = new Intent(MainActivity.this, LauncherActivity.class);
-                                startActivity(intent);
-                                MainActivity.this.finish();
-                            }
-                        });
-            }
-        });*/
+        updateUserMetaData();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -113,23 +101,51 @@ public class MainActivity extends AppCompatActivity {
                         .bitmapTransform(new CropCircleTransformation(getApplicationContext()))
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(profileImageView);
-                /*Glide.with(getApplicationContext())
-                        .load("")
-                        .placeholder(R.drawable.navback)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(navbg);*/
-
             }
         }
-        Log.v(TAG, "<Suprateem>biometric setting: " + Util.getBiometric(getApplicationContext()));
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.v(TAG, "onResume");
+
+        dbTwitterID = FirebaseDBHelper.getUserMetaDataRef().child("twitterID");
+        dbTwitterID.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.v(TAG, "onDataChange");
+                String twitter_username = dataSnapshot.getValue().toString();
+                if (twitter_username == null || twitter_username.isEmpty()) {
+                    Log.v(TAG, "No Twitter ID provided");
+                    addTwitterDialog = onCreateDialog();
+                    addTwitterDialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public Dialog onCreateDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.add_twitter)
+                .setNeutralButton(R.string.okay, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        return builder.create();
     }
 
     @Override
@@ -167,5 +183,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    private void updateUserMetaData() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference ref = FirebaseDBHelper.getUserMetaDataRef();
+        ref.child("displayName").setValue(user.getDisplayName());
+        ref.child("email").setValue(user.getEmail());
+        ref.child("phone").setValue(user.getPhoneNumber());
+        ref.child("photoURI").setValue(user.getPhotoUrl().toString());
     }
 }

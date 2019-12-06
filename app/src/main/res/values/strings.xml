@@ -7,6 +7,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="logoff">Sign Out</string>
+    <string name="signin_failed">Sign In Failed! Try again...</string>
+    <string name="auth_fail">Authentication failed</string>
+    <string name="auth_error">Authentication error: </string>
+    <string name="biometric_login">BIOMETRIC LOGIN</string>
+    <string name="biometric_msg">Log in using your biometric credentials</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_settings">Settings</string>
@@ -27,10 +32,11 @@
 
     <string name="register_header">Add Members</string>
     <string name="register">Register</string>
-    <string name="uname">Twitter Username</string>
+    <string name="uname">Enter Email Address</string>
     <string name="cancel">Cancel</string>
+    <string name="add_twitter">Please add your Twitter ID to settings in order to enable visualization view</string>
+    <string name="okay">Okay!</string>
 
-    <!-- text view to show user details -->
     <string name="com_twitter_sdk_android_CONSUMER_KEY">K9phmt7S3dMQuWWAxEF2tgD9g</string>
     <string name="com_twitter_sdk_android_CONSUMER_SECRET">J8CTVo1syneIKNAJt0KRvsx09Vwvi8BKkyhaL5LwGW4XC4u5b4</string>
     <string name="com_twitter_sdk_android_ACCESS_TOKEN">4741050794-Uj6ZtaJVFo4aif7viTo5O75TVAcV9dZ4J1XCsbD</string>
@@ -38,6 +44,17 @@
     <string name="msg_subscribed">Subscribed</string>
     <string name="msg_subscribe_failed">Subscribe Failed</string>
     <string name="channel_name">HELP</string>
-    <string name="channel_description">HELP NOTIFICATIOn CHANNEL</string>
+    <string name="channel_description">HELP NOTIFICATION CHANNEL</string>
+
+    <string name="emo_anger">Anger</string>
+    <string name="emo_anti">Anticipation</string>
+    <string name="emo_disgust">Disgust</string>
+    <string name="emo_fear">Fear</string>
+    <string name="emo_joy">Joy</string>
+    <string name="emo_negative">Negative</string>
+    <string name="emo_positive">Positive</string>
+    <string name="emo_sad">Sadness</string>
+    <string name="emo_surprise">Surprise</string>
+    <string name="emo_trust">Trust</string>
 
 </resources>

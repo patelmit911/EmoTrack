@@ -8,15 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.ArrayList;
 
 import edu.asu.mcgroup27.emotrack.R;
+import edu.asu.mcgroup27.emotrack.adapters.HomeListAdapter;
+import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
+import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
+import edu.asu.mcgroup27.emotrack.adapters.DisplayContent;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
@@ -25,52 +33,65 @@ import twitter4j.conf.ConfigurationBuilder;
 public class HomeFragment extends Fragment {
     private final String TAG = "HomeFragment";
 
-    private HomeViewModel homeViewModel;
+    private Bundle savedBundle;
     private String uName = "";
-    Dialog register;
+    private HomeListAdapter friendAdapter;
+    static ListView friendListView;
+    private Dialog register;
+    public static ArrayList<DisplayContent> friendlist = new ArrayList<DisplayContent>();
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, final Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        savedBundle = savedInstanceState;
 
-        FloatingActionButton fab = root.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                register = onCreateDialog(savedInstanceState);
-                register.show();
-            }
-        });
+        friendListView = root.findViewById(R.id.friendListView);
+        friendAdapter = new HomeListAdapter(getContext());
+
+        friendListView.setAdapter(friendAdapter);
+
         return root;
     }
 
-    public void saveUserName() {
-        EditText et = register.findViewById(R.id.username);
-        uName = et.getText().toString();
-        Log.v(TAG, "<Suprateem>saveUserName: " + uName);
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        try {
-            fetchTwitterInfo(uName);
-        } catch (TwitterException e) {
-            e.printStackTrace();
-        }
+        Log.v(TAG, "onResume");
+
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                register = onCreateDialog();
+                register.show();
+
+            }
+        });
     }
 
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public void sendFriendRequest() {
+        EditText et = register.findViewById(R.id.username);
+        uName = et.getText().toString();
+        FirebaseDBHelper.getUserFriendReqs(uName, new UserDBRefListener() {
+            @Override
+            public void onObtained(DatabaseReference databaseReference) {
+                FirebaseDBHelper.insertItem(databaseReference, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            }
+        });
+    }
+
+    public Dialog onCreateDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater.inflate(R.layout.dialog_signin, null))
-                // Add action buttons
                 .setPositiveButton(R.string.register, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        saveUserName();
+                        sendFriendRequest();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -99,7 +120,7 @@ public class HomeFragment extends Fragment {
 
                     User user = twitter.showUser("sbhatt4g");
                     String profileImage = user.getProfileImageURL();
-                    Log.v(TAG, "<Suprateem>fetchTwitterInfo: " + profileImage);
+                    Log.v(TAG, "fetchTwitterInfo: " + profileImage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
