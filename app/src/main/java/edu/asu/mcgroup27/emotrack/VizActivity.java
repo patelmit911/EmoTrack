@@ -1,46 +1,23 @@
 package edu.asu.mcgroup27.emotrack;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.RectF;
-import android.graphics.Typeface;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.model.GradientColor;
-import com.github.mikephil.charting.utils.MPPointF;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,22 +28,16 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-import edu.asu.mcgroup27.emotrack.adapters.DayAxisValueFormatter;
-import edu.asu.mcgroup27.emotrack.adapters.MyValueFormatter;
-import edu.asu.mcgroup27.emotrack.adapters.XYMarkerView;
 import edu.asu.mcgroup27.emotrack.database.FirebaseDBHelper;
 import edu.asu.mcgroup27.emotrack.database.UserDBRefListener;
 import edu.asu.mcgroup27.emotrack.messaging.SendMessageTask;
@@ -81,6 +52,18 @@ public class VizActivity extends AppCompatActivity {
     private int emotion_index = 0;
     private Iterator<String> iter;
     private double[] emotion = new double[10];
+    public static final int[] EMOTION_COLORS = {
+            Color.rgb(255, 0, 0),
+            Color.rgb(0, 0, 255),
+            Color.rgb(255, 255, 0),
+            Color.rgb(255, 0, 255),
+            Color.rgb(127, 0, 255),
+            Color.rgb(0, 255, 255),
+            Color.rgb(128, 128, 128),
+            Color.rgb(0, 255, 0),
+            Color.rgb(255, 128, 0),
+            Color.rgb(0, 150, 136),
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,143 +74,72 @@ public class VizActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.viz_layout);
 
+        setTitle("Emotional Visualisation");
+
+        chart = findViewById(R.id.chart1);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         twitterID = getIntent().getStringExtra("twitterID");
         currentUserEmail = getIntent().getStringExtra("cur_user");
         Log.v(TAG, "<Suprateem>twitterID: " + twitterID + " , currentUserEmail: " + currentUserEmail);
-
-        setTitle("BarChartActivity");
-
-        chart = findViewById(R.id.chart1);
-        chart.setDrawBarShadow(false);
-        chart.setDrawValueAboveBar(true);
-        chart.getDescription().setEnabled(false);
-
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        chart.setMaxVisibleValueCount(60);
-
-        // scaling can now only be done on x- and y-axis separately
-        chart.setPinchZoom(false);
-
-        chart.setDrawGridBackground(false);
-        // chart.setDrawYLabels(false);
-
-        ValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        //xAxis.setTypeface(tfLight);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f); // only intervals of 1 day
-        xAxis.setLabelCount(7);
-        xAxis.setValueFormatter(xAxisFormatter);
-
-        ValueFormatter custom = new MyValueFormatter("$");
-
-        YAxis leftAxis = chart.getAxisLeft();
-        //leftAxis.setTypeface(tfLight);
-        leftAxis.setLabelCount(8, false);
-        leftAxis.setValueFormatter(custom);
-        leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        //rightAxis.setTypeface(tfLight);
-        rightAxis.setLabelCount(8, false);
-        rightAxis.setValueFormatter(custom);
-        rightAxis.setSpaceTop(15f);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setForm(LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
-
-        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
-        mv.setChartView(chart); // For bounds control
-        chart.setMarker(mv); // Set the marker to the chart
-
-        setData(50,12);
-
-        // chart.setDrawLegend(false);
 
         DownloadDataTask downloadDataTask = new DownloadDataTask();
         downloadDataTask.execute(twitterID, "50");
     }
 
-    private void setData(int count, float range) {
-
-        float start = 1f;
-
+    private void setData(int count, double[] emotion) {
+        Log.v(TAG, "<Suprateem>setData");
+        String[] emotionList = new String[]{"Anger", "Anticipation", "Disgust", "Fear", "Joy", "Negative", "Positive", "Sadness", "Surprise", "Trust"};
         ArrayList<BarEntry> values = new ArrayList<>();
-
-        for (int i = (int) start; i < start + count; i++) {
-            float val = (float) (Math.random() * (range + 1));
-
-            if (Math.random() * 100 < 25) {
-                values.add(new BarEntry(i, val, getResources().getDrawable(R.drawable.star)));
-            } else {
-                values.add(new BarEntry(i, val));
-            }
+        double sum = 0.0;
+        for (int i = 0; i < count; i++) {
+            sum += emotion[i];
+        }
+        for (int i = 0; i < count; i++) {
+            float val = (float) (emotion[i] / sum) * 100;
+            values.add(new BarEntry(i, val, emotionList[i]));
         }
 
         BarDataSet set1;
+        set1 = new BarDataSet(values, "Emotion Visualisation");
+        set1.setDrawIcons(false);
+        set1.setColors(EMOTION_COLORS);
 
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1);
 
-        } else {
-            set1 = new BarDataSet(values, "The year 2017");
+        BarData data = new BarData(dataSets);
+        data.setValueTextSize(10f);
+        data.setBarWidth(0.9f);
 
-            set1.setDrawIcons(false);
+        chart.setData(data);
+    }
 
-//            set1.setColors(ColorTemplate.MATERIAL_COLORS);
+    public void showVisualisation(double[] emotion) {
+        chart = findViewById(R.id.chart1);
 
-            /*int startColor = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
-            int endColor = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
-            set1.setGradientColor(startColor, endColor);*/
+        chart.getDescription().setEnabled(false);
+        chart.setMaxVisibleValueCount(60);
+        chart.setPinchZoom(false);
 
-            int startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
-            int startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light);
-            int startColor3 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
-            int startColor4 = ContextCompat.getColor(this, android.R.color.holo_green_light);
-            int startColor5 = ContextCompat.getColor(this, android.R.color.holo_red_light);
-            int endColor1 = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
-            int endColor2 = ContextCompat.getColor(this, android.R.color.holo_purple);
-            int endColor3 = ContextCompat.getColor(this, android.R.color.holo_green_dark);
-            int endColor4 = ContextCompat.getColor(this, android.R.color.holo_red_dark);
-            int endColor5 = ContextCompat.getColor(this, android.R.color.holo_orange_dark);
+        chart.setDrawBarShadow(false);
+        chart.setDrawGridBackground(false);
 
-            List<GradientColor> gradientColors = new ArrayList<>();
-            gradientColors.add(new GradientColor(startColor1, endColor1));
-            gradientColors.add(new GradientColor(startColor2, endColor2));
-            gradientColors.add(new GradientColor(startColor3, endColor3));
-            gradientColors.add(new GradientColor(startColor4, endColor4));
-            gradientColors.add(new GradientColor(startColor5, endColor5));
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setDrawGridLines(false);
 
-            set1.setGradientColors(gradientColors);
+        chart.getAxisLeft().setDrawGridLines(false);
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
+        chart.animateY(1500);
 
-            BarData data = new BarData(dataSets);
-            data.setValueTextSize(10f);
-            //data.setValueTypeface(tfLight);
-            data.setBarWidth(0.9f);
+        Legend l = chart.getLegend();
+        l.setEnabled(false);
 
-            chart.setData(data);
-        }
+        setData(10, emotion);
     }
 
     public void sendNotification(View view) {
@@ -238,7 +150,7 @@ public class VizActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        for(DataSnapshot emergencyContact : dataSnapshot.getChildren()) {
+                        for (DataSnapshot emergencyContact : dataSnapshot.getChildren()) {
                             SendMessageTask.sendNotification(emergencyContact.getValue().toString(), "Attention for " + currentUserEmail, "Notification from " + user.getEmail());
                         }
                     }
@@ -257,7 +169,6 @@ public class VizActivity extends AppCompatActivity {
 
         @Override
         protected JSONObject doInBackground(String... strings) {
-
             JSONObject result = null;
 
             try {
@@ -278,7 +189,7 @@ public class VizActivity extends AppCompatActivity {
                 os.close();
 
 
-                if(httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
                     String line = "";
                     StringBuilder stringBuilder = new StringBuilder();
@@ -304,16 +215,16 @@ public class VizActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-            Log.v(TAG, "<Suprateem>onPostExecute: " +jsonObject.toString());
+            Log.v(TAG, "<Suprateem>onPostExecute");
             try {
                 emotion_index = 0;
                 Iterator<String> iter1 = jsonObject.keys();
-                while(iter1.hasNext()) {
+                while (iter1.hasNext()) {
                     JSONObject emo_obj = jsonObject.getJSONObject(iter1.next());
                     iter = emo_obj.keys();
-                    count  = 0;
+                    count = 0;
                     double dominance = 0.0;
-                    while(iter.hasNext()) {
+                    while (iter.hasNext()) {
                         String key = iter.next();
                         dominance += emo_obj.getDouble(key);
                         count += 1;
@@ -321,76 +232,9 @@ public class VizActivity extends AppCompatActivity {
                     dominance = dominance / count;
                     emotion[emotion_index] = dominance;
                     emotion_index += 1;
+
+                    showVisualisation(emotion);
                 }
-
-                /*JSONObject anger = jsonObject.getJSONObject("anger_d");
-                JSONObject anticipation = jsonObject.getJSONObject("anticipation_d");
-                JSONObject disgust = jsonObject.getJSONObject("disgust_d");
-                JSONObject fear = jsonObject.getJSONObject("fear_d");
-                JSONObject joy = jsonObject.getJSONObject("joy_d");
-                JSONObject negative = jsonObject.getJSONObject("negative_d");
-                JSONObject positive = jsonObject.getJSONObject("positive_d");
-                JSONObject sadness = jsonObject.getJSONObject("sadness_d");
-                JSONObject surprise = jsonObject.getJSONObject("surprise_d");
-                JSONObject trust = jsonObject.getJSONObject("trust_d");
-
-
-
-                iter = anger.keys();
-                count  = 0;
-                double anger_d = 0.0;
-                while(iter.hasNext()) {
-                    String key = iter.next();
-                    anger_d += anger.getDouble(key);
-                    count += 1;
-                }
-                anger_d = anger_d / count;
-                emotion[0] = anger_d;
-
-                iter = anticipation.keys();
-                count  = 0;
-                double anticipation_d = 0.0;
-                while(iter.hasNext()) {
-                    String key = iter.next();
-                    anticipation_d += anticipation.getDouble(key);
-                    count += 1;
-                }
-                anticipation_d = anger_d / count;
-                emotion[1] = anticipation_d;
-
-                iter = disgust.keys();
-                count  = 0;
-                double disgust_d = 0.0;
-                while(iter.hasNext()) {
-                    String key = iter.next();
-                    disgust_d += disgust.getDouble(key);
-                    count += 1;
-                }
-                disgust_d = disgust_d / count;
-                emotion[2] = disgust_d;
-
-                iter = fear.keys();
-                count  = 0;
-                double fear_d = 0.0;
-                while(iter.hasNext()) {
-                    String key = iter.next();
-                    fear_d += fear.getDouble(key);
-                    count += 1;
-                }
-                fear_d = fear_d / count;
-                emotion[3] = fear_d;
-
-                iter = joy.keys();
-                count  = 0;
-                double joy_d = 0.0;
-                while(iter.hasNext()) {
-                    String key = iter.next();
-                    joy_d += joy.getDouble(key);
-                    count += 1;
-                }
-                joy_d = joy_d / count;
-                emotion[3] = joy_d;*/
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
