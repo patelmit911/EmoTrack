@@ -37,7 +37,6 @@
     <string name="add_twitter">Please add your Twitter ID to settings in order to enable visualization view</string>
     <string name="okay">Okay!</string>
 
-    <!-- text view to show user details -->
     <string name="com_twitter_sdk_android_CONSUMER_KEY">K9phmt7S3dMQuWWAxEF2tgD9g</string>
     <string name="com_twitter_sdk_android_CONSUMER_SECRET">J8CTVo1syneIKNAJt0KRvsx09Vwvi8BKkyhaL5LwGW4XC4u5b4</string>
     <string name="com_twitter_sdk_android_ACCESS_TOKEN">4741050794-Uj6ZtaJVFo4aif7viTo5O75TVAcV9dZ4J1XCsbD</string>
@@ -45,6 +44,17 @@
     <string name="msg_subscribed">Subscribed</string>
     <string name="msg_subscribe_failed">Subscribe Failed</string>
     <string name="channel_name">HELP</string>
-    <string name="channel_description">HELP NOTIFICATIOn CHANNEL</string>
+    <string name="channel_description">HELP NOTIFICATION CHANNEL</string>
+
+    <string name="emo_anger">Anger</string>
+    <string name="emo_anti">Anticipation</string>
+    <string name="emo_disgust">Disgust</string>
+    <string name="emo_fear">Fear</string>
+    <string name="emo_joy">Joy</string>
+    <string name="emo_negative">Negative</string>
+    <string name="emo_positive">Positive</string>
+    <string name="emo_sad">Sadness</string>
+    <string name="emo_surprise">Surprise</string>
+    <string name="emo_trust">Trust</string>
 
 </resources>

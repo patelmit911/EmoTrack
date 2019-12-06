@@ -59,8 +59,8 @@ public class VizActivity extends AppCompatActivity {
             Color.rgb(255, 0, 255),
             Color.rgb(127, 0, 255),
             Color.rgb(0, 255, 255),
-            Color.rgb(128, 128, 128),
             Color.rgb(0, 255, 0),
+            Color.rgb(128, 128, 128),
             Color.rgb(255, 128, 0),
             Color.rgb(0, 150, 136),
     };
@@ -69,7 +69,7 @@ public class VizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.v(TAG, "<Suprateem>onCreate");
+        Log.v(TAG, "onCreate");
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.viz_layout);
@@ -85,7 +85,6 @@ public class VizActivity extends AppCompatActivity {
 
         twitterID = getIntent().getStringExtra("twitterID");
         currentUserEmail = getIntent().getStringExtra("cur_user");
-        Log.v(TAG, "<Suprateem>twitterID: " + twitterID + " , currentUserEmail: " + currentUserEmail);
 
         DownloadDataTask downloadDataTask = new DownloadDataTask();
         downloadDataTask.execute(twitterID, "50");
@@ -208,7 +207,7 @@ public class VizActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.v(TAG, "<Suprateem>Result from cloud: " + result);
+            Log.v(TAG, "Result from cloud: " + result);
 
             return result;
         }
