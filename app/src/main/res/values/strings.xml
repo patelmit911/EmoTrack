@@ -7,6 +7,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="logoff">Sign Out</string>
+    <string name="signin_failed">Sign In Failed! Try again...</string>
+    <string name="auth_fail">Authentication failed</string>
+    <string name="auth_error">Authentication error: </string>
+    <string name="biometric_login">BIOMETRIC LOGIN</string>
+    <string name="biometric_msg">Log in using your biometric credentials</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_settings">Settings</string>

@@ -109,7 +109,7 @@ public class SettingsFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         editTextTwitter = addTwitterDialog.findViewById(R.id.usernameEditText);
                         usernameEditText = editTextTwitter.getText().toString();
-                        Log.v(TAG, "<Suprateem>Twitter ID: " + usernameEditText + ", " +usernameEditText.isEmpty());
+                        Log.v(TAG, "Twitter ID: " + usernameEditText + ", " +usernameEditText.isEmpty());
                         if (usernameEditText != null && !usernameEditText.isEmpty()) {
                             dbtwitteridref.setValue(usernameEditText);
                         }

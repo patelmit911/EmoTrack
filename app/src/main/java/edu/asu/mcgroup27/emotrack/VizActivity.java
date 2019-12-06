@@ -92,7 +92,8 @@ public class VizActivity extends AppCompatActivity {
     }
 
     private void setData(int count, double[] emotion) {
-        Log.v(TAG, "<Suprateem>setData");
+        Log.v(TAG, "setData");
+
         String[] emotionList = new String[]{"Anger", "Anticipation", "Disgust", "Fear", "Joy", "Negative", "Positive", "Sadness", "Surprise", "Trust"};
         ArrayList<BarEntry> values = new ArrayList<>();
         double sum = 0.0;
@@ -215,7 +216,7 @@ public class VizActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-            Log.v(TAG, "<Suprateem>onPostExecute");
+            Log.v(TAG, "onPostExecute");
             try {
                 emotion_index = 0;
                 Iterator<String> iter1 = jsonObject.keys();
